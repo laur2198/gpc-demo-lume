@@ -1,0 +1,46 @@
+---
+import Placeholder from './Placeholder.astro';
+
+// 6 images, asymmetric/masonry feel. Ratios vary to break the grid.
+const shots = [
+  { file: 'gallery-1.avif', ratio: '3 / 4' },
+  { file: 'gallery-2.avif', ratio: '4 / 3' },
+  { file: 'gallery-3.avif', ratio: '1 / 1' },
+  { file: 'gallery-4.avif', ratio: '4 / 3' },
+  { file: 'gallery-5.avif', ratio: '1 / 1' },
+  { file: 'gallery-6.avif', ratio: '3 / 4' },
+];
+---
+<section id="galerie" class="section gallery">
+  <div class="section__inner">
+    <div class="gallery__masonry">
+      {shots.map((s, i) => (
+        <figure class="gallery__item" data-reveal data-reveal-delay={(i % 3) + 1}>
+          <Placeholder file={s.file} ratio={s.ratio} class="gallery__img" />
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section { padding: 4rem 1.25rem; }
+  .section__inner { max-width: 72rem; margin: 0 auto; }
+
+  .gallery__masonry { columns: 2; column-gap: 1rem; }
+  .gallery__item { margin: 0 0 1rem; break-inside: avoid; }
+  .gallery__img {
+    border-radius: 0.9rem;
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .gallery__item:hover .gallery__img {
+    transform: scale(1.03);
+    box-shadow: 0 18px 40px -22px color-mix(in oklab, var(--plum) 55%, transparent);
+  }
+
+  @media (min-width: 768px) {
+    .section { padding: 5.5rem 2rem; }
+    .gallery__masonry { columns: 3; column-gap: 1.25rem; }
+    .gallery__item { margin-bottom: 1.25rem; }
+  }
+</style>
