@@ -11,7 +11,9 @@ const titleWords = 'Privirea ta, în cea mai bună formă.'.split(' ');
       <p class="hero__eyebrow" data-reveal>STUDIO DE ÎNFRUMUSEȚARE · BRAȘOV</p>
       <h1 class="h1 hero__title">
         {titleWords.map((word, i) => (
-          <span class="hero__word" data-reveal style={`transition-delay:${(0.05 + i * 0.06).toFixed(2)}s`}>{word}&#32;</span>
+          <Fragment>
+            <span class="hero__word" data-reveal style={`transition-delay:${(0.05 + i * 0.06).toFixed(2)}s`}>{word}</span>{' '}
+          </Fragment>
         ))}
       </h1>
       <p class="lead hero__sub" data-reveal data-reveal-delay="2">
