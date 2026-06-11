@@ -1,0 +1,102 @@
+---
+import Placeholder from './Placeholder.astro';
+---
+<section class="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <div class="hero__inner">
+    <div class="hero__copy">
+      <p class="hero__eyebrow" data-reveal>STUDIO DE ÎNFRUMUSEȚARE · BRAȘOV</p>
+      <h1 class="h1 hero__title" data-reveal data-reveal-delay="1">
+        Privirea ta, în cea mai bună formă.
+      </h1>
+      <p class="lead hero__sub" data-reveal data-reveal-delay="2">
+        Extensii de gene, stilizare sprâncene și îngrijirea tenului — într-un
+        spațiu intim, cu tehnicieni certificați.
+      </p>
+      <div class="hero__cta" data-reveal data-reveal-delay="3">
+        <a href="#contact" class="btn btn--primary">Rezervă o programare</a>
+        <a href="#servicii" class="btn btn--ghost">Vezi serviciile</a>
+      </div>
+    </div>
+
+    <div class="hero__media" data-reveal data-reveal-delay="2">
+      <Placeholder file="hero.avif" ratio="3 / 4" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero-glow {
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 140%;
+    z-index: -1;
+    opacity: 0.55;
+    filter: blur(8px);
+  }
+  .hero__inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 4rem;
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .hero__eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .hero__title { color: var(--plum); }
+  .hero__sub {
+    margin-top: 1.25rem;
+    max-width: 34ch;
+    color: color-mix(in oklab, var(--ink) 85%, transparent);
+  }
+  .hero__cta {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .btn--primary {
+    background: var(--plum);
+    color: var(--cream);
+    box-shadow: 0 8px 24px -12px color-mix(in oklab, var(--plum) 70%, transparent);
+  }
+  .btn--primary:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--plum) 90%, black); }
+  .btn--ghost {
+    background: transparent;
+    color: var(--plum);
+    border: 1px solid color-mix(in oklab, var(--plum) 35%, transparent);
+  }
+  .btn--ghost:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--blush) 40%, transparent); }
+  .hero__media { max-width: 22rem; margin-inline: auto; width: 100%; }
+
+  @media (min-width: 768px) {
+    .hero__inner {
+      grid-template-columns: 1.1fr 0.9fr;
+      padding: 5rem 2rem 6rem;
+    }
+    .hero__media { max-width: none; }
+  }
+</style>
