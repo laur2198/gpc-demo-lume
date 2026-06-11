@@ -1,5 +1,7 @@
 ---
 import Placeholder from './Placeholder.astro';
+
+const titleWords = 'Privirea ta, în cea mai bună formă.'.split(' ');
 ---
 <section class="hero">
   <div class="hero-glow" aria-hidden="true"></div>
@@ -7,8 +9,10 @@ import Placeholder from './Placeholder.astro';
   <div class="hero__inner">
     <div class="hero__copy">
       <p class="hero__eyebrow" data-reveal>STUDIO DE ÎNFRUMUSEȚARE · BRAȘOV</p>
-      <h1 class="h1 hero__title" data-reveal data-reveal-delay="1">
-        Privirea ta, în cea mai bună formă.
+      <h1 class="h1 hero__title">
+        {titleWords.map((word, i) => (
+          <span class="hero__word" data-reveal style={`transition-delay:${(0.05 + i * 0.06).toFixed(2)}s`}>{word}&#32;</span>
+        ))}
       </h1>
       <p class="lead hero__sub" data-reveal data-reveal-delay="2">
         Extensii de gene, stilizare sprâncene și îngrijirea tenului — într-un
@@ -57,6 +61,7 @@ import Placeholder from './Placeholder.astro';
     margin-bottom: 1rem;
   }
   .hero__title { color: var(--plum); }
+  .hero__word { display: inline-block; }
   .hero__sub {
     margin-top: 1.25rem;
     max-width: 34ch;
