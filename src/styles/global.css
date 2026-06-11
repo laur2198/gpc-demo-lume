@@ -22,6 +22,8 @@
 
 html { scroll-behavior: smooth; background: var(--cream); color: var(--ink); }
 body { font-family: var(--font-body); }
+img { max-width: 100%; }
+picture { display: block; }
 h1,h2,h3 { font-family: var(--font-display); font-weight: 500; }
 
 /* Type scale */

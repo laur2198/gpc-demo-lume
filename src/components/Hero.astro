@@ -1,5 +1,5 @@
 ---
-import Placeholder from './Placeholder.astro';
+import Img from './Img.astro';
 
 const titleWords = 'Privirea ta, în cea mai bună formă.'.split(' ');
 ---
@@ -25,7 +25,15 @@ const titleWords = 'Privirea ta, în cea mai bună formă.'.split(' ');
     </div>
 
     <div class="hero__media" data-reveal data-reveal-delay="2">
-      <Placeholder file="hero.avif" ratio="3 / 4" />
+      <Img
+        name="hero"
+        ratio="3 / 4"
+        alt="Privire de aproape cu extensii de gene lungi, naturale, în tonuri calde"
+        eager
+        sizes="(min-width: 768px) 42vw, 100vw"
+        widths={[400, 600, 880]}
+        class="hero__img"
+      />
     </div>
   </div>
 </section>
@@ -96,6 +104,7 @@ const titleWords = 'Privirea ta, în cea mai bună formă.'.split(' ');
   }
   .btn--ghost:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--blush) 40%, transparent); }
   .hero__media { max-width: 22rem; margin-inline: auto; width: 100%; }
+  .hero__img { width: 100%; height: auto; border-radius: 1rem; display: block; }
 
   @media (min-width: 768px) {
     .hero__inner {

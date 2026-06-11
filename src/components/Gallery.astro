@@ -1,14 +1,14 @@
 ---
-import Placeholder from './Placeholder.astro';
+import Img from './Img.astro';
 
-// 6 images, asymmetric/masonry feel. Ratios vary to break the grid.
+// All six real photos, asymmetric/masonry feel. Ratios vary to break the grid.
 const shots = [
-  { file: 'gallery-1.avif', ratio: '3 / 4' },
-  { file: 'gallery-2.avif', ratio: '4 / 3' },
-  { file: 'gallery-3.avif', ratio: '1 / 1' },
-  { file: 'gallery-4.avif', ratio: '4 / 3' },
-  { file: 'gallery-5.avif', ratio: '1 / 1' },
-  { file: 'gallery-6.avif', ratio: '3 / 4' },
+  { img: 'interior', ratio: '4 / 3', alt: 'Cabină de tratament LUMÉ, spațiu intim și luminos' },
+  { img: 'lash',     ratio: '4 / 3', alt: 'Aplicare extensii de gene în studio' },
+  { img: 'brow',     ratio: '3 / 4', alt: 'Sprâncene stilizate, prim-plan' },
+  { img: 'skin',     ratio: '4 / 3', alt: 'Ten luminos după tratament facial' },
+  { img: 'products', ratio: '4 / 3', alt: 'Produse premium pentru îngrijirea tenului' },
+  { img: 'hero',     ratio: '3 / 4', alt: 'Privire de aproape cu extensii de gene' },
 ];
 ---
 <section id="galerie" class="section gallery">
@@ -16,7 +16,7 @@ const shots = [
     <div class="gallery__masonry">
       {shots.map((s, i) => (
         <figure class="gallery__item" data-reveal data-reveal-delay={(i % 3) + 1}>
-          <Placeholder file={s.file} ratio={s.ratio} class="gallery__img" />
+          <Img name={s.img} ratio={s.ratio} alt={s.alt} sizes="(min-width: 768px) 33vw, 50vw" widths={[280, 420, 560]} class="gallery__img" />
         </figure>
       ))}
     </div>
@@ -30,6 +30,9 @@ const shots = [
   .gallery__masonry { columns: 2; column-gap: 1rem; }
   .gallery__item { margin: 0 0 1rem; break-inside: avoid; }
   .gallery__img {
+    width: 100%;
+    height: auto;
+    display: block;
     border-radius: 0.9rem;
     transition: transform .3s ease, box-shadow .3s ease;
   }
