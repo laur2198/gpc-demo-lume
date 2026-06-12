@@ -2,117 +2,173 @@
 import Img from './Img.astro';
 
 const titleWords = 'Privirea ta, în cea mai bună formă.'.split(' ');
+const accentFrom = 5; // "bună formă." rendered as italic accent
 ---
 <section class="hero">
-  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero__bg" aria-hidden="true"></div>
 
   <div class="hero__inner">
     <div class="hero__copy">
-      <p class="hero__eyebrow" data-reveal>STUDIO DE ÎNFRUMUSEȚARE · BRAȘOV</p>
+      <p class="hero__eyebrow" data-reveal>
+        <span class="hero__dot" aria-hidden="true"></span>
+        Studio de înfrumusețare · Brașov
+      </p>
+
       <h1 class="h1 hero__title">
         {titleWords.map((word, i) => (
           <Fragment>
-            <span class="hero__word" data-reveal style={`transition-delay:${(0.05 + i * 0.06).toFixed(2)}s`}>{word}</span>{' '}
+            <span
+              class:list={['hero__word', i >= accentFrom && 'hero__word--accent']}
+              data-reveal
+              style={`transition-delay:${(0.05 + i * 0.06).toFixed(2)}s`}
+            >{word}</span>{' '}
           </Fragment>
         ))}
       </h1>
+
       <p class="lead hero__sub" data-reveal data-reveal-delay="2">
         Extensii de gene, stilizare sprâncene și îngrijirea tenului — într-un
         spațiu intim, cu tehnicieni certificați.
       </p>
+
       <div class="hero__cta" data-reveal data-reveal-delay="3">
         <a href="#contact" class="btn btn--primary">Rezervă o programare</a>
         <a href="#servicii" class="btn btn--ghost">Vezi serviciile</a>
       </div>
+
+      <ul class="hero__trust" data-reveal data-reveal-delay="3">
+        <li><strong>★ 4.9</strong><span>din 200+ recenzii</span></li>
+        <li><strong>1.200+</strong><span>cliente mulțumite</span></li>
+        <li><strong>6 ani</strong><span>experiență</span></li>
+      </ul>
     </div>
 
     <div class="hero__media" data-reveal data-reveal-delay="2">
-      <Img
-        name="hero"
-        ratio="3 / 4"
-        alt="Privire de aproape cu extensii de gene lungi, naturale, în tonuri calde"
-        eager
-        sizes="(min-width: 768px) 42vw, 100vw"
-        widths={[400, 600, 880]}
-        class="hero__img"
-      />
+      <span class="hero__blob" aria-hidden="true"></span>
+      <span class="hero__arc" aria-hidden="true"></span>
+      <figure class="hero__frame">
+        <Img
+          name="hero"
+          ratio="4 / 5"
+          alt="Privire de aproape cu extensii de gene lungi, naturale, în tonuri calde"
+          eager
+          sizes="(min-width: 768px) 40vw, 100vw"
+          widths={[440, 640, 880]}
+          class="hero__img"
+        />
+      </figure>
+
+      <div class="hero__chip">
+        <span class="hero__chip-icon" aria-hidden="true">★</span>
+        <span class="hero__chip-text"><strong>Lash artist</strong> certificat</span>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .hero {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
+  .hero { position: relative; overflow: hidden; isolation: isolate; }
+
+  /* Layered warm background */
+  .hero__bg {
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(70% 55% at 82% 18%, color-mix(in oklab, var(--blush) 80%, transparent), transparent 60%),
+      radial-gradient(60% 60% at 12% 8%, color-mix(in oklab, var(--gold) 24%, transparent), transparent 55%),
+      radial-gradient(90% 90% at 50% 120%, color-mix(in oklab, var(--blush) 45%, transparent), transparent 60%),
+      var(--cream);
   }
-  .hero-glow {
-    position: absolute;
-    inset: -20% -10% auto -10%;
-    height: 140%;
-    z-index: -1;
-    opacity: 0.55;
-    filter: blur(8px);
-  }
+
   .hero__inner {
-    max-width: 72rem;
-    margin: 0 auto;
-    padding: 3rem 1.25rem 4rem;
-    display: grid;
-    gap: 2.5rem;
-    align-items: center;
+    max-width: 72rem; margin: 0 auto;
+    padding: 2.5rem 1.25rem 3.5rem;
+    display: grid; gap: 2.5rem; align-items: center;
   }
+
   .hero__eyebrow {
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 600;
-    margin-bottom: 1rem;
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--plum); font-weight: 600;
+    background: color-mix(in oklab, var(--cream) 60%, white);
+    border: 1px solid color-mix(in oklab, var(--gold) 40%, transparent);
+    padding: 0.4rem 0.85rem; border-radius: 999px;
+    margin-bottom: 1.5rem;
   }
+  .hero__dot {
+    width: 0.45rem; height: 0.45rem; border-radius: 999px;
+    background: var(--gold); box-shadow: 0 0 0 3px color-mix(in oklab, var(--gold) 25%, transparent);
+  }
+
   .hero__title { color: var(--plum); }
   .hero__word { display: inline-block; }
+  .hero__word--accent {
+    font-style: italic;
+    color: color-mix(in oklab, var(--gold) 62%, var(--plum));
+  }
+
   .hero__sub {
-    margin-top: 1.25rem;
-    max-width: 34ch;
-    color: color-mix(in oklab, var(--ink) 85%, transparent);
+    margin-top: 1.4rem; max-width: 36ch;
+    color: color-mix(in oklab, var(--ink) 82%, transparent);
   }
-  .hero__cta {
-    margin-top: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+
+  .hero__cta { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  .hero__trust {
+    list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem 2rem;
+    margin-top: 2.5rem; padding-top: 1.75rem;
+    border-top: 1px solid color-mix(in oklab, var(--plum) 12%, transparent);
   }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.8rem 1.5rem;
-    border-radius: 999px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+  .hero__trust li { display: grid; gap: 0.1rem; }
+  .hero__trust strong {
+    font-family: var(--font-display); font-weight: 500; font-size: 1.35rem;
+    color: var(--plum); line-height: 1;
   }
-  .btn--primary {
-    background: var(--plum);
-    color: var(--cream);
-    box-shadow: 0 8px 24px -12px color-mix(in oklab, var(--plum) 70%, transparent);
+  .hero__trust span { font-size: 0.8rem; color: color-mix(in oklab, var(--ink) 65%, transparent); }
+
+  /* Media */
+  .hero__media { position: relative; width: 100%; max-width: 24rem; margin-inline: auto; }
+  .hero__blob {
+    position: absolute; z-index: -1; inset: -8% -10% -10% 6%;
+    background: radial-gradient(closest-side, color-mix(in oklab, var(--blush) 90%, var(--gold)), transparent 72%);
+    filter: blur(6px);
   }
-  .btn--primary:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--plum) 90%, black); }
-  .btn--ghost {
-    background: transparent;
-    color: var(--plum);
-    border: 1px solid color-mix(in oklab, var(--plum) 35%, transparent);
+  .hero__arc {
+    position: absolute; z-index: 2; top: -1.4rem; right: -0.6rem;
+    width: 5.5rem; height: 5.5rem; border-radius: 999px;
+    border: 2px solid color-mix(in oklab, var(--gold) 70%, transparent);
+    border-bottom-color: transparent; border-left-color: transparent;
+    transform: rotate(-20deg);
   }
-  .btn--ghost:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--blush) 40%, transparent); }
-  .hero__media { max-width: 22rem; margin-inline: auto; width: 100%; }
-  .hero__img { width: 100%; height: auto; border-radius: 1rem; display: block; }
+  .hero__frame {
+    position: relative; border-radius: 1.5rem; overflow: hidden;
+    box-shadow:
+      0 30px 60px -28px color-mix(in oklab, var(--plum) 70%, transparent),
+      0 0 0 1px color-mix(in oklab, var(--gold) 35%, transparent),
+      0 0 0 8px color-mix(in oklab, var(--cream) 70%, white);
+  }
+  .hero__img {
+    width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 58% 50%;
+    display: block;
+  }
+  .hero__chip {
+    position: absolute; left: -0.75rem; bottom: 1.25rem; z-index: 3;
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    background: color-mix(in oklab, var(--cream) 85%, white);
+    border: 1px solid color-mix(in oklab, var(--plum) 10%, transparent);
+    padding: 0.6rem 0.9rem; border-radius: 999px;
+    box-shadow: 0 16px 32px -18px color-mix(in oklab, var(--plum) 60%, transparent);
+  }
+  .hero__chip-icon {
+    display: grid; place-items: center; width: 1.6rem; height: 1.6rem;
+    border-radius: 999px; background: var(--gold); color: var(--plum);
+    font-size: 0.85rem;
+  }
+  .hero__chip-text { font-size: 0.82rem; color: var(--ink); line-height: 1.2; }
+  .hero__chip-text strong { display: block; color: var(--plum); font-weight: 600; }
 
   @media (min-width: 768px) {
-    .hero__inner {
-      grid-template-columns: 1.1fr 0.9fr;
-      padding: 5rem 2rem 6rem;
-    }
+    .hero__inner { grid-template-columns: 1.05fr 0.95fr; padding: 4.5rem 2rem 5.5rem; gap: 3.5rem; }
     .hero__media { max-width: none; }
+    .hero__trust strong { font-size: 1.5rem; }
   }
 </style>
