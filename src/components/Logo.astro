@@ -1,0 +1,48 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+<!-- Wordmark LUMÉ in Fraunces; accent on É stylised as a small gold glow/arc -->
+<span class:list={["lume-logo", className]} aria-label="LUMÉ Studio">
+  LUM<span class="lume-e">É</span>
+</span>
+
+<style>
+  .lume-logo {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--plum);
+    position: relative;
+    display: inline-block;
+  }
+  .lume-e {
+    position: relative;
+    color: var(--gold);
+  }
+  /* soft gold glow behind the accented É */
+  .lume-e::before {
+    content: "";
+    position: absolute;
+    inset: -0.18em -0.12em;
+    background: radial-gradient(closest-side, color-mix(in oklab, var(--gold) 55%, transparent), transparent 75%);
+    border-radius: 999px;
+    z-index: -1;
+  }
+  /* small gold arc above the É */
+  .lume-e::after {
+    content: "";
+    position: absolute;
+    top: -0.12em;
+    left: 50%;
+    width: 0.5em;
+    height: 0.22em;
+    transform: translateX(-50%);
+    border-top: 0.06em solid var(--gold);
+    border-radius: 999px 999px 0 0;
+    opacity: 0.85;
+  }
+</style>

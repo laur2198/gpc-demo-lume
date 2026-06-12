@@ -1,0 +1,49 @@
+---
+import Img from './Img.astro';
+
+// All six real photos, asymmetric/masonry feel. Ratios vary to break the grid.
+const shots = [
+  { img: 'interior', ratio: '4 / 3', alt: 'Cabină de tratament LUMÉ, spațiu intim și luminos' },
+  { img: 'lash',     ratio: '4 / 3', alt: 'Aplicare extensii de gene în studio' },
+  { img: 'brow',     ratio: '3 / 4', alt: 'Sprâncene stilizate, prim-plan' },
+  { img: 'skin',     ratio: '4 / 3', alt: 'Ten luminos după tratament facial' },
+  { img: 'products', ratio: '4 / 3', alt: 'Produse premium pentru îngrijirea tenului' },
+  { img: 'editorial', ratio: '4 / 3', alt: 'Detaliu editorial din studio — gene, sprâncene, mâini' },
+];
+---
+<section id="galerie" class="section gallery">
+  <div class="section__inner">
+    <div class="gallery__masonry">
+      {shots.map((s, i) => (
+        <figure class="gallery__item" data-reveal data-reveal-delay={(i % 3) + 1}>
+          <Img name={s.img} ratio={s.ratio} alt={s.alt} sizes="(min-width: 768px) 33vw, 50vw" widths={[280, 420, 560]} class="gallery__img" />
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section { padding: 4rem 1.25rem; }
+  .section__inner { max-width: 72rem; margin: 0 auto; }
+
+  .gallery__masonry { columns: 2; column-gap: 1rem; }
+  .gallery__item { margin: 0 0 1rem; break-inside: avoid; }
+  .gallery__img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0.9rem;
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .gallery__item:hover .gallery__img {
+    transform: scale(1.03);
+    box-shadow: 0 18px 40px -22px color-mix(in oklab, var(--plum) 55%, transparent);
+  }
+
+  @media (min-width: 768px) {
+    .section { padding: 5.5rem 2rem; }
+    .gallery__masonry { columns: 3; column-gap: 1.25rem; }
+    .gallery__item { margin-bottom: 1.25rem; }
+  }
+</style>

@@ -1,0 +1,175 @@
+---
+import Base from '../../layouts/Base.astro';
+import ConceptBanner from '../../components/ConceptBanner.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import BookingBand from '../../components/BookingBand.astro';
+import Img from '../../components/Img.astro';
+import { services } from '../../data/services';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+const { service } = Astro.props;
+const others = services.filter((s) => s.slug !== service.slug);
+---
+<Base
+  title={`${service.title} — LUMÉ Studio`}
+  description={service.short}
+>
+  <ConceptBanner />
+  <Nav />
+  <main>
+    <PageHeader eyebrow="Serviciu" title={service.title} subtitle={service.intro}>
+      <div class="ph-meta">
+        <span>de la <strong>{service.priceFrom} lei</strong></span>
+        <span>·</span>
+        <span>{service.duration}</span>
+      </div>
+      <div class="ph-actions">
+        <a class="btn btn--primary" href="/contact/">Rezervă o programare</a>
+        <a class="btn btn--ghost" href="/preturi/">Vezi toate prețurile</a>
+      </div>
+    </PageHeader>
+
+    <section class="section">
+      <div class="container detail">
+        <div class="detail__media" data-reveal>
+          <Img name={service.img} ratio="4 / 3" alt={service.alt} sizes="(min-width: 900px) 40vw, 100vw" widths={[400, 600, 800]} class="detail__img" />
+        </div>
+        <div class="detail__benefits" data-reveal data-reveal-delay="1">
+          <h2 class="h2 block-title">De ce LUMÉ</h2>
+          <ul class="benefits">
+            {service.benefits.map((b) => <li>{b}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container">
+        <h2 class="h2 block-title" data-reveal>Opțiuni & tarife</h2>
+        <div class="types">
+          {service.types.map((t, i) => (
+            <div class="type" data-reveal data-reveal-delay={(i % 3) + 1}>
+              <div class="type__head">
+                <h3 class="type__name">{t.name}</h3>
+                <span class="type__price">de la {t.priceFrom} lei</span>
+              </div>
+              <p class="type__desc">{t.desc}</p>
+              <span class="type__dur">{t.duration}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container faq-wrap">
+        <h2 class="h2 block-title" data-reveal>Întrebări frecvente</h2>
+        <div class="faq">
+          {service.faq.map((f, i) => (
+            <details class="faq__item" data-reveal data-reveal-delay={(i % 3) + 1}>
+              <summary class="faq__q">{f.q}<span class="faq__icon" aria-hidden="true"></span></summary>
+              <p class="faq__a">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container">
+        <h2 class="h2 block-title" data-reveal>Alte servicii</h2>
+        <div class="others">
+          {others.map((s) => (
+            <a class="other" href={`/servicii/${s.slug}/`} data-reveal>
+              <Img name={s.img} ratio="4 / 3" alt={s.alt} sizes="(min-width: 768px) 45vw, 100vw" widths={[320, 480]} class="other__img" />
+              <div class="other__body">
+                <h3 class="other__title">{s.title}</h3>
+                <span class="other__more">Vezi detalii →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <BookingBand />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .section { padding-block: 3.5rem; }
+  .section--alt { background: color-mix(in oklab, var(--blush) 26%, var(--cream)); }
+  .block-title { color: var(--plum); margin-bottom: 1.75rem; }
+
+  .ph-meta { margin-top: 1.5rem; display: flex; gap: 0.6rem; align-items: center; color: color-mix(in oklab, var(--ink) 80%, transparent); }
+  .ph-meta strong { font-family: var(--font-display); color: var(--plum); font-size: 1.15rem; }
+  .ph-actions { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  .detail { display: grid; gap: 2rem; align-items: start; }
+  .detail__img { width: 100%; border-radius: 1rem; display: block; }
+  .benefits { list-style: none; display: grid; gap: 0.85rem; }
+  .benefits li { position: relative; padding-left: 1.75rem; line-height: 1.6; }
+  .benefits li::before {
+    content: ""; position: absolute; left: 0; top: 0.45em;
+    width: 0.7rem; height: 0.7rem; border-radius: 999px;
+    background: var(--gold);
+  }
+
+  .types { display: grid; gap: 1.25rem; }
+  .type {
+    background: color-mix(in oklab, var(--cream) 94%, white);
+    border: 1px solid color-mix(in oklab, var(--plum) 10%, transparent);
+    border-radius: 1rem; padding: 1.4rem 1.5rem;
+  }
+  .type__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .type__name { color: var(--plum); font-size: 1.25rem; }
+  .type__price { color: var(--gold); font-weight: 600; white-space: nowrap; }
+  .type__desc { margin-top: 0.6rem; line-height: 1.6; color: color-mix(in oklab, var(--ink) 85%, transparent); }
+  .type__dur { display: inline-block; margin-top: 0.75rem; font-size: 0.85rem; color: color-mix(in oklab, var(--ink) 60%, transparent); }
+
+  .faq-wrap { max-width: 48rem; }
+  .faq__item { border-bottom: 1px solid color-mix(in oklab, var(--plum) 12%, transparent); }
+  .faq__q {
+    cursor: pointer; list-style: none; display: flex; align-items: center;
+    justify-content: space-between; gap: 1rem; padding: 1.1rem 0;
+    font-family: var(--font-display); font-size: 1.1rem; color: var(--plum);
+  }
+  .faq__q::-webkit-details-marker { display: none; }
+  .faq__icon { position: relative; flex: none; width: 1rem; height: 1rem; }
+  .faq__icon::before, .faq__icon::after {
+    content: ""; position: absolute; top: 50%; left: 0; width: 1rem; height: 2px;
+    background: var(--gold); transform: translateY(-50%); transition: transform .25s ease;
+  }
+  .faq__icon::after { transform: translateY(-50%) rotate(90deg); }
+  .faq__item[open] .faq__icon::after { transform: translateY(-50%) rotate(0); }
+  .faq__a { padding: 0 0 1.25rem; line-height: 1.7; color: color-mix(in oklab, var(--ink) 82%, transparent); }
+
+  .others { display: grid; gap: 1.25rem; }
+  .other {
+    display: block; text-decoration: none; color: inherit;
+    background: color-mix(in oklab, var(--cream) 94%, white);
+    border: 1px solid color-mix(in oklab, var(--plum) 10%, transparent);
+    border-radius: 1rem; overflow: hidden;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .other:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--plum) 55%, transparent); }
+  .other__img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+  .other__body { padding: 1rem 1.25rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .other__title { color: var(--plum); font-size: 1.15rem; }
+  .other__more { color: var(--gold); font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
+
+  @media (min-width: 768px) {
+    .section { padding-block: 4.5rem; }
+    .types { grid-template-columns: repeat(3, 1fr); }
+    .others { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 900px) {
+    .detail { grid-template-columns: 0.9fr 1.1fr; gap: 3rem; }
+  }
+</style>

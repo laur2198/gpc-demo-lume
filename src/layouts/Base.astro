@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'LUMÉ Studio — Studio de înfrumusețare · Brașov',
+  description = 'Extensii de gene, stilizare sprâncene și îngrijirea tenului într-un spațiu intim, cu tehnicieni certificați. LUMÉ Studio, Brașov.',
+} = Astro.props;
+
+const ogImage = new URL('/og.png', Astro.site).href;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BeautySalon',
+  name: 'LUMÉ Studio',
+  image: ogImage,
+  description,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Str. Republicii 12',
+    addressLocality: 'Brașov',
+    addressCountry: 'RO',
+  },
+  telephone: '+40700000000',
+  priceRange: '180–480 RON',
+  openingHours: 'Mo-Sa 09:00-19:00',
+};
+---
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="ro_RO" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+    <script src="../scripts/motion.js"></script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

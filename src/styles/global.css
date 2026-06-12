@@ -1,0 +1,87 @@
+@import "tailwindcss";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/inter";
+
+:root {
+  --blush: #E8D5CE;
+  --plum:  #4A2C3A;
+  --cream: #FAF6F2;
+  --gold:  #C9A77C;
+  --ink:   #2B2422;
+}
+
+@theme {
+  --color-blush: var(--blush);
+  --color-plum:  var(--plum);
+  --color-cream: var(--cream);
+  --color-gold:  var(--gold);
+  --color-ink:   var(--ink);
+  --font-display: "Fraunces Variable", serif;
+  --font-body:    "Inter Variable", sans-serif;
+}
+
+html { scroll-behavior: smooth; background: var(--cream); color: var(--ink); }
+body { font-family: var(--font-body); }
+img { max-width: 100%; }
+picture { display: block; }
+h1,h2,h3 { font-family: var(--font-display); font-weight: 500; }
+
+/* Type scale */
+.h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; letter-spacing: -0.02em; }
+.h2 { font-size: clamp(2rem, 4vw, 3rem);   line-height: 1.1;  letter-spacing: -0.01em; }
+.lead { font-size: 1.0625rem; line-height: 1.7; }
+
+/* Shared layout + UI utilities (used by the dedicated pages) */
+.container { max-width: 72rem; margin-inline: auto; padding-inline: 1.25rem; }
+.eyebrow {
+  font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600;
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 500;
+  text-decoration: none; cursor: pointer;
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.btn--primary {
+  background: var(--plum); color: var(--cream);
+  box-shadow: 0 8px 24px -12px color-mix(in oklab, var(--plum) 70%, transparent);
+}
+.btn--primary:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--plum) 90%, black); }
+.btn--ghost {
+  background: transparent; color: var(--plum);
+  border: 1px solid color-mix(in oklab, var(--plum) 35%, transparent);
+}
+.btn--ghost:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--blush) 40%, transparent); }
+@media (min-width: 768px) { .container { padding-inline: 2rem; } }
+
+/* Scroll reveal (motion pass — Faza 7).
+   JS-gated: the hidden start state only applies when JS is present (html.js),
+   so no-JS users always see the content. motion.js adds .in-view on scroll. */
+.js [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+.js [data-reveal].in-view { opacity: 1; transform: none; }
+.js [data-reveal-delay="1"] { transition-delay: .08s; }
+.js [data-reveal-delay="2"] { transition-delay: .16s; }
+.js [data-reveal-delay="3"] { transition-delay: .24s; }
+
+/* Hero ambient gradient — slow, subtle, warm */
+@property --hero-a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.hero-glow {
+  background:
+    radial-gradient(60% 60% at 70% 30%, color-mix(in oklab, var(--blush) 70%, transparent), transparent 70%),
+    conic-gradient(from var(--hero-a) at 30% 40%, var(--cream), var(--blush) 35%, var(--gold) 55%, var(--cream) 80%);
+  animation: hero-drift 24s ease-in-out infinite alternate;
+}
+@keyframes hero-drift {
+  to { --hero-a: 120deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  /* reveal never runs for these users — keep all content fully visible */
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+}

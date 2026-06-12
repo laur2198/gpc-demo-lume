@@ -1,0 +1,69 @@
+---
+const points = [
+  { title: 'Tehnicieni certificați', desc: 'Formare continuă, tehnică verificată.', icon: 'cert' },
+  { title: 'Produse premium hipoalergenice', desc: 'Sigure pentru ochi sensibili.', icon: 'drop' },
+  { title: 'Igienă spital-grade', desc: 'Sterilizare la fiecare ședință.', icon: 'shield' },
+  { title: 'Spațiu intim, fără grabă', desc: 'O singură clientă pe rând.', icon: 'heart' },
+];
+---
+<section class="section whyus">
+  <div class="section__inner">
+    <header class="section__head" data-reveal>
+      <p class="section__eyebrow">De ce LUMÉ</p>
+      <h2 class="h2">Detaliile care fac diferența.</h2>
+    </header>
+
+    <div class="whyus__grid">
+      {points.map((p, i) => (
+        <div class="why" data-reveal data-reveal-delay={(i % 3) + 1}>
+          <span class="why__icon" aria-hidden="true">
+            {p.icon === 'cert' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5 8 21l4-2 4 2-1-7.5"/></svg>
+            )}
+            {p.icon === 'drop' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/></svg>
+            )}
+            {p.icon === 'shield' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 10 4-2.5 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            )}
+            {p.icon === 'heart' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 2.5C19 15.5 12 20 12 20Z"/></svg>
+            )}
+          </span>
+          <h3 class="why__title">{p.title}</h3>
+          <p class="why__desc">{p.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section { padding: 4rem 1.25rem; }
+  .section__inner { max-width: 72rem; margin: 0 auto; }
+  .whyus { background: color-mix(in oklab, var(--blush) 28%, var(--cream)); }
+  .section__head { margin-bottom: 2.5rem; max-width: 36rem; }
+  .section__eyebrow {
+    font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 0.75rem;
+  }
+  .section__head .h2 { color: var(--plum); }
+
+  .whyus__grid { display: grid; gap: 2rem 1.5rem; grid-template-columns: 1fr; }
+  .why__icon {
+    display: inline-grid; place-items: center;
+    width: 3rem; height: 3rem; border-radius: 999px;
+    background: color-mix(in oklab, var(--cream) 80%, white);
+    color: var(--plum);
+    margin-bottom: 0.9rem;
+  }
+  .why__icon svg { width: 1.5rem; height: 1.5rem; }
+  .why__title { color: var(--plum); font-size: 1.15rem; }
+  .why__desc { margin-top: 0.4rem; line-height: 1.6; color: color-mix(in oklab, var(--ink) 80%, transparent); }
+
+  @media (min-width: 640px) { .whyus__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) {
+    .section { padding: 5.5rem 2rem; }
+    .whyus__grid { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>

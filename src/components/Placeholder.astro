@@ -1,0 +1,37 @@
+---
+// Gradient placeholder standing in for a real image until assets arrive.
+// Swap = drop the real file into public/images/ and replace this with <Image>.
+interface Props {
+  file: string;       // expected filename, e.g. "hero.avif"
+  ratio?: string;     // CSS aspect-ratio, e.g. "3 / 4"
+  class?: string;
+}
+const { file, ratio = '4 / 3', class: className } = Astro.props;
+---
+<div class:list={["ph", className]} style={`aspect-ratio:${ratio}`} role="img" aria-label={`Imagine: ${file}`}>
+  <span class="ph__label">{file}</span>
+</div>
+
+<style>
+  .ph {
+    width: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background:
+      linear-gradient(135deg,
+        color-mix(in oklab, var(--blush) 80%, var(--cream)) 0%,
+        color-mix(in oklab, var(--gold) 35%, var(--cream)) 55%,
+        color-mix(in oklab, var(--plum) 18%, var(--cream)) 100%);
+  }
+  .ph__label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: color-mix(in oklab, var(--plum) 60%, transparent);
+    background: color-mix(in oklab, var(--cream) 70%, transparent);
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+  }
+</style>

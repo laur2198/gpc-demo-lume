@@ -1,0 +1,88 @@
+---
+const faqs = [
+  {
+    q: 'Cât durează o ședință?',
+    a: 'Între 90 și 120 de minute, în funcție de serviciu.',
+  },
+  {
+    q: 'Cât rezistă extensiile?',
+    a: '3–4 săptămâni, cu retuș recomandat la 3 săptămâni.',
+  },
+  {
+    q: 'Sunt sigure pentru genele naturale?',
+    a: 'Da, aplicate corect, fir cu fir, fără să afecteze genele tale.',
+  },
+  {
+    q: 'Vin machiată la programare?',
+    a: 'Te rugăm fără machiaj în zona ochilor, pentru aderență optimă.',
+  },
+];
+---
+<section class="section faq">
+  <div class="faq__inner">
+    <header class="section__head" data-reveal>
+      <p class="section__eyebrow">Întrebări frecvente</p>
+      <h2 class="h2">Bine de știut înainte de vizită.</h2>
+    </header>
+
+    <div class="faq__list">
+      {faqs.map((f, i) => (
+        <details class="faq__item" data-reveal data-reveal-delay={(i % 3) + 1}>
+          <summary class="faq__q">
+            {f.q}
+            <span class="faq__icon" aria-hidden="true"></span>
+          </summary>
+          <p class="faq__a">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section { padding: 4rem 1.25rem; }
+  .faq__inner { max-width: 48rem; margin: 0 auto; }
+  .section__head { margin-bottom: 2rem; }
+  .section__eyebrow {
+    font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 0.75rem;
+  }
+  .section__head .h2 { color: var(--plum); }
+
+  .faq__item {
+    border-bottom: 1px solid color-mix(in oklab, var(--plum) 12%, transparent);
+  }
+  .faq__q {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--plum);
+  }
+  .faq__q::-webkit-details-marker { display: none; }
+  .faq__icon {
+    position: relative;
+    flex: none;
+    width: 1rem; height: 1rem;
+  }
+  .faq__icon::before, .faq__icon::after {
+    content: ""; position: absolute; top: 50%; left: 0;
+    width: 1rem; height: 2px; background: var(--gold);
+    transform: translateY(-50%);
+    transition: transform .25s ease;
+  }
+  .faq__icon::after { transform: translateY(-50%) rotate(90deg); }
+  .faq__item[open] .faq__icon::after { transform: translateY(-50%) rotate(0); }
+  .faq__a {
+    padding: 0 0 1.25rem;
+    line-height: 1.7;
+    color: color-mix(in oklab, var(--ink) 82%, transparent);
+  }
+
+  @media (min-width: 768px) { .section { padding: 5.5rem 2rem; } }
+</style>

@@ -1,0 +1,34 @@
+---
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Programează-te în câteva secunde.',
+  text = 'Răspundem rapid pe WhatsApp.',
+} = Astro.props;
+---
+<section class="band">
+  <div class="container band__inner" data-reveal>
+    <div>
+      <h2 class="h2 band__title">{title}</h2>
+      <p class="lead band__text">{text}</p>
+    </div>
+    <div class="band__actions">
+      <a class="btn btn--primary" href="/contact/">Rezervă o programare</a>
+      <a class="btn btn--ghost" href="https://wa.me/40700000000" rel="noopener" target="_blank">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .band { padding-block: 4rem; background: color-mix(in oklab, var(--blush) 40%, var(--cream)); }
+  .band__inner { display: grid; gap: 1.5rem; align-items: center; }
+  .band__title { color: var(--plum); }
+  .band__text { margin-top: 0.5rem; color: color-mix(in oklab, var(--ink) 80%, transparent); }
+  .band__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  @media (min-width: 768px) {
+    .band { padding-block: 5rem; }
+    .band__inner { grid-template-columns: 1fr auto; }
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+import { Picture } from 'astro:assets';
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  name: string;        // base filename without extension, e.g. "hero"
+  ratio?: string;      // CSS aspect-ratio for the placeholder fallback, e.g. "3 / 4"
+  alt: string;
+  eager?: boolean;     // hero = true (eager + high priority); rest lazy
+  sizes?: string;
+  widths?: number[];
+  class?: string;
+}
+
+const {
+  name,
+  ratio = '4 / 3',
+  alt,
+  eager = false,
+  sizes = '(min-width: 768px) 33vw, 100vw',
+  widths = [320, 480, 640, 960],
+  class: className,
+} = Astro.props;
+
+// Glob every image in src/assets/images regardless of extension, eagerly,
+// so each one carries width/height metadata. Map by base filename.
+const modules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/images/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+const map: Record<string, ImageMetadata> = {};
+for (const [path, mod] of Object.entries(modules)) {
+  const base = path.split('/').pop()!.replace(/\.[^.]+$/, '');
+  map[base] = mod.default;
+}
+
+const meta = map[name];
+---
+{meta ? (
+  <Picture
+    src={meta}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    alt={alt}
+    widths={widths}
+    sizes={sizes}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : 'auto'}
+    decoding={eager ? 'auto' : 'async'}
+    class={className}
+  />
+) : (
+  <Placeholder file={`${name}.avif`} ratio={ratio} class={className} />
+)}
