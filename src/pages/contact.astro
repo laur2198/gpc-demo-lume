@@ -1,0 +1,162 @@
+---
+import Base from '../layouts/Base.astro';
+import ConceptBanner from '../components/ConceptBanner.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const phone = '0700 000 000';
+const wa = 'https://wa.me/40700000000';
+---
+<Base
+  title="Contact — LUMÉ Studio"
+  description="Programează-te la LUMÉ Studio din Brașov. WhatsApp, telefon, program și adresă."
+>
+  <ConceptBanner />
+  <Nav />
+  <main>
+    <PageHeader
+      eyebrow="Contact"
+      title="Hai să ne cunoaștem."
+      subtitle="Cel mai rapid răspuns îl primești pe WhatsApp. Te așteptăm într-un spațiu intim, fără grabă."
+    />
+
+    <section class="section">
+      <div class="container contact">
+        <div class="contact__info" data-reveal>
+          <ul class="info">
+            <li>
+              <span class="info__label">WhatsApp</span>
+              <a class="info__value" href={wa} rel="noopener" target="_blank">Scrie-ne pe WhatsApp</a>
+            </li>
+            <li>
+              <span class="info__label">Telefon</span>
+              <a class="info__value" href="tel:0700000000">{phone}</a>
+            </li>
+            <li>
+              <span class="info__label">Email</span>
+              <a class="info__value" href="mailto:contact@lume-concept.ro">contact@lume-concept.ro</a>
+            </li>
+            <li>
+              <span class="info__label">Program</span>
+              <span class="info__value">Luni–Sâmbătă · 09:00–19:00</span>
+            </li>
+            <li>
+              <span class="info__label">Adresă</span>
+              <span class="info__value">Str. Republicii 12, Brașov</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="contact__form-wrap" data-reveal data-reveal-delay="1">
+          <form class="form" id="wa-form">
+            <p class="form__intro">Spune-ne pe scurt ce îți dorești — îți deschidem o conversație pe WhatsApp cu mesajul precompletat.</p>
+            <label class="field">
+              <span>Nume</span>
+              <input type="text" name="nume" required autocomplete="name" />
+            </label>
+            <label class="field">
+              <span>Serviciu dorit</span>
+              <select name="serviciu">
+                <option>Extensii de gene</option>
+                <option>Sprâncene</option>
+                <option>Îngrijire ten</option>
+                <option>Nu sunt sigură</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Mesaj</span>
+              <textarea name="mesaj" rows="3" placeholder="Ex: aș dori o programare săptămâna viitoare după-amiaza."></textarea>
+            </label>
+            <button type="submit" class="btn btn--primary form__submit">Trimite pe WhatsApp</button>
+            <noscript><p class="form__ns">Sau scrie-ne direct: <a href={wa}>WhatsApp</a> · <a href="tel:0700000000">{phone}</a></p></noscript>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container">
+        <div class="map" data-reveal role="img" aria-label="Hartă orientativă — Str. Republicii 12, Brașov">
+          <div class="map__grid" aria-hidden="true"></div>
+          <div class="map__pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+          </div>
+          <span class="map__label">Str. Republicii 12, Brașov</span>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<script is:inline>
+  (function () {
+    var form = document.getElementById('wa-form');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var d = new FormData(form);
+      var msg =
+        'Bună! Sunt ' + (d.get('nume') || '') +
+        '. Aș dori o programare pentru: ' + (d.get('serviciu') || '') +
+        '.' + (d.get('mesaj') ? ' ' + d.get('mesaj') : '');
+      window.open('https://wa.me/40700000000?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    });
+  })();
+</script>
+
+<style>
+  .section { padding-block: 3.5rem; }
+  .section--alt { background: color-mix(in oklab, var(--blush) 26%, var(--cream)); }
+
+  .contact { display: grid; gap: 2.5rem; }
+  .info { list-style: none; display: grid; gap: 1.4rem; }
+  .info li { display: grid; gap: 0.2rem; }
+  .info__label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+  .info__value { font-size: 1.1rem; color: var(--ink); text-decoration: none; }
+  a.info__value:hover { color: var(--plum); }
+
+  .form { display: grid; gap: 1rem; max-width: 32rem; }
+  .form__intro { line-height: 1.6; color: color-mix(in oklab, var(--ink) 82%, transparent); }
+  .field { display: grid; gap: 0.35rem; }
+  .field > span { font-size: 0.85rem; font-weight: 600; color: var(--plum); }
+  .field input, .field select, .field textarea {
+    font: inherit; padding: 0.7rem 0.9rem; border-radius: 0.7rem;
+    border: 1px solid color-mix(in oklab, var(--plum) 20%, transparent);
+    background: var(--cream); color: var(--ink); width: 100%;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: 2px solid color-mix(in oklab, var(--gold) 70%, transparent); outline-offset: 1px;
+  }
+  .form__submit { margin-top: 0.5rem; justify-self: start; }
+  .form__ns { margin-top: 0.5rem; }
+  .form__ns a { color: var(--plum); }
+
+  .map {
+    position: relative; height: 320px; border-radius: 1.25rem; overflow: hidden;
+    background:
+      radial-gradient(80% 80% at 50% 40%, color-mix(in oklab, var(--blush) 60%, var(--cream)), var(--cream));
+    display: grid; place-items: center; isolation: isolate;
+  }
+  .map__grid {
+    position: absolute; inset: 0; z-index: -1; opacity: 0.5;
+    background-image:
+      linear-gradient(color-mix(in oklab, var(--plum) 10%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklab, var(--plum) 10%, transparent) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .map__pin { color: var(--plum); filter: drop-shadow(0 6px 10px color-mix(in oklab, var(--plum) 40%, transparent)); }
+  .map__pin svg { width: 3rem; height: 3rem; }
+  .map__label {
+    position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
+    background: var(--cream); color: var(--plum); font-weight: 600; font-size: 0.9rem;
+    padding: 0.4rem 0.9rem; border-radius: 999px;
+    box-shadow: 0 8px 20px -10px color-mix(in oklab, var(--plum) 50%, transparent);
+  }
+
+  @media (min-width: 820px) {
+    .section { padding-block: 4.5rem; }
+    .contact { grid-template-columns: 0.8fr 1.2fr; gap: 3rem; }
+  }
+</style>

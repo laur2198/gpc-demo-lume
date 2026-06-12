@@ -31,6 +31,30 @@ h1,h2,h3 { font-family: var(--font-display); font-weight: 500; }
 .h2 { font-size: clamp(2rem, 4vw, 3rem);   line-height: 1.1;  letter-spacing: -0.01em; }
 .lead { font-size: 1.0625rem; line-height: 1.7; }
 
+/* Shared layout + UI utilities (used by the dedicated pages) */
+.container { max-width: 72rem; margin-inline: auto; padding-inline: 1.25rem; }
+.eyebrow {
+  font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600;
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 500;
+  text-decoration: none; cursor: pointer;
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.btn--primary {
+  background: var(--plum); color: var(--cream);
+  box-shadow: 0 8px 24px -12px color-mix(in oklab, var(--plum) 70%, transparent);
+}
+.btn--primary:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--plum) 90%, black); }
+.btn--ghost {
+  background: transparent; color: var(--plum);
+  border: 1px solid color-mix(in oklab, var(--plum) 35%, transparent);
+}
+.btn--ghost:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--blush) 40%, transparent); }
+@media (min-width: 768px) { .container { padding-inline: 2rem; } }
+
 /* Scroll reveal (motion pass — Faza 7).
    JS-gated: the hidden start state only applies when JS is present (html.js),
    so no-JS users always see the content. motion.js adds .in-view on scroll. */

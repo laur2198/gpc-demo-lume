@@ -1,0 +1,128 @@
+---
+import Base from '../layouts/Base.astro';
+import ConceptBanner from '../components/ConceptBanner.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import PageHeader from '../components/PageHeader.astro';
+import BookingBand from '../components/BookingBand.astro';
+import { plans } from '../data/pricing';
+import { services } from '../data/services';
+---
+<Base
+  title="Prețuri — LUMÉ Studio"
+  description="Pachete și tarife pentru extensii de gene, sprâncene și îngrijirea tenului la LUMÉ Studio, Brașov."
+>
+  <ConceptBanner />
+  <Nav />
+  <main>
+    <PageHeader
+      eyebrow="Prețuri"
+      title="Tarife clare, fără surprize."
+      subtitle="Prețurile pornesc de la valorile de mai jos și se confirmă în funcție de serviciul ales și de starea genelor, sprâncenelor sau tenului tău."
+    />
+
+    <section class="section">
+      <div class="container">
+        <h2 class="h2 block-title" data-reveal>Pachete</h2>
+        <div class="plans">
+          {plans.map((p, i) => (
+            <article class:list={["plan", p.featured && "plan--featured"]} data-reveal data-reveal-delay={i + 1}>
+              {p.featured && <span class="plan__badge">{p.note}</span>}
+              <h3 class="plan__name">{p.name}</h3>
+              <p class="plan__price">de la <strong>{p.price}</strong></p>
+              <p class="plan__detail">{p.detail}</p>
+              {!p.featured && <p class="plan__note">„{p.note}”</p>}
+              <a href="/contact/" class="btn btn--primary plan__cta">Rezervă</a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container">
+        <h2 class="h2 block-title" data-reveal>Tarife pe serviciu</h2>
+        <div class="tables">
+          {services.map((s) => (
+            <div class="ptable" data-reveal>
+              <div class="ptable__head">
+                <h3 class="ptable__title">{s.title}</h3>
+                <a class="ptable__link" href={`/servicii/${s.slug}/`}>detalii →</a>
+              </div>
+              <ul class="ptable__rows">
+                {s.types.map((t) => (
+                  <li class="prow">
+                    <span class="prow__name">{t.name}</span>
+                    <span class="prow__dur">{t.duration}</span>
+                    <span class="prow__price">de la {t.priceFrom} lei</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p class="note" data-reveal>Tarifele sunt orientative pentru un demo concept. Prețul final se confirmă la programare.</p>
+      </div>
+    </section>
+
+    <BookingBand title="Nu ești sigură ce ți se potrivește?" text="Scrie-ne și îți recomandăm pachetul potrivit." />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .section { padding-block: 3.5rem; }
+  .section--alt { background: color-mix(in oklab, var(--blush) 26%, var(--cream)); }
+  .block-title { color: var(--plum); margin-bottom: 1.75rem; }
+
+  .plans { display: grid; gap: 1.5rem; }
+  .plan {
+    position: relative; display: flex; flex-direction: column;
+    background: color-mix(in oklab, var(--cream) 92%, white);
+    border: 1px solid color-mix(in oklab, var(--plum) 10%, transparent);
+    border-radius: 1.25rem; padding: 2rem 1.6rem;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .plan:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--plum) 60%, transparent); }
+  .plan--featured { border-color: var(--gold); background: color-mix(in oklab, var(--blush) 30%, var(--cream)); }
+  .plan__badge {
+    position: absolute; top: -0.8rem; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: var(--plum); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.85rem;
+    border-radius: 999px; white-space: nowrap;
+  }
+  .plan__name { color: var(--plum); font-size: 1.5rem; }
+  .plan__price { margin-top: 0.6rem; font-size: 1.05rem; }
+  .plan__price strong { font-family: var(--font-display); font-size: 1.6rem; color: var(--plum); }
+  .plan__detail { margin-top: 0.75rem; line-height: 1.6; }
+  .plan__note { margin-top: 0.5rem; font-style: italic; color: color-mix(in oklab, var(--ink) 65%, transparent); }
+  .plan__cta { margin-top: auto; align-self: flex-start; }
+  .plan--featured .plan__cta { margin-top: 1.5rem; }
+
+  .tables { display: grid; gap: 1.5rem; }
+  .ptable {
+    background: color-mix(in oklab, var(--cream) 94%, white);
+    border: 1px solid color-mix(in oklab, var(--plum) 10%, transparent);
+    border-radius: 1rem; padding: 1.4rem 1.5rem;
+  }
+  .ptable__head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; }
+  .ptable__title { color: var(--plum); font-size: 1.25rem; }
+  .ptable__link { color: var(--gold); font-weight: 600; font-size: 0.85rem; text-decoration: none; }
+  .ptable__link:hover { text-decoration: underline; }
+  .ptable__rows { list-style: none; }
+  .prow {
+    display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 1rem; align-items: baseline;
+    padding: 0.75rem 0; border-bottom: 1px solid color-mix(in oklab, var(--plum) 8%, transparent);
+  }
+  .prow:last-child { border-bottom: 0; }
+  .prow__name { font-weight: 600; color: var(--ink); }
+  .prow__dur { grid-row: 2; font-size: 0.85rem; color: color-mix(in oklab, var(--ink) 60%, transparent); }
+  .prow__price { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--gold); font-weight: 600; white-space: nowrap; }
+  .note { margin-top: 1.5rem; font-size: 0.85rem; color: color-mix(in oklab, var(--ink) 60%, transparent); }
+
+  @media (min-width: 768px) {
+    .section { padding-block: 4.5rem; }
+    .plans { grid-template-columns: repeat(3, 1fr); align-items: start; }
+    .tables { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

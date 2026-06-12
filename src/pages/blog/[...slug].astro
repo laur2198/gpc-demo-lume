@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import ConceptBanner from '../../components/ConceptBanner.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import BookingBand from '../../components/BookingBand.astro';
+import Img from '../../components/Img.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmt = (d: Date) => d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={`${post.data.title} — LUMÉ Studio`} description={post.data.description}>
+  <ConceptBanner />
+  <Nav />
+  <main>
+    <article class="article">
+      <div class="container article__head">
+        <a class="back" href="/blog/">← Blog</a>
+        <p class="article__meta">{fmt(post.data.date)} · {post.data.readingMinutes} min</p>
+        <h1 class="h1 article__title">{post.data.title}</h1>
+        <p class="lead article__lead">{post.data.description}</p>
+      </div>
+
+      <div class="container article__cover">
+        <Img name={post.data.cover} ratio="16 / 9" alt={post.data.coverAlt} eager sizes="(min-width: 768px) 720px, 100vw" widths={[480, 720, 960]} class="article__img" />
+      </div>
+
+      <div class="container">
+        <div class="prose">
+          <Content />
+        </div>
+      </div>
+    </article>
+
+    <BookingBand />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .article__head { max-width: 44rem; padding-block: 2.5rem 1.5rem; }
+  .back { color: var(--gold); font-weight: 600; text-decoration: none; font-size: 0.9rem; }
+  .back:hover { text-decoration: underline; }
+  .article__meta { margin-top: 1.25rem; font-size: 0.85rem; letter-spacing: 0.04em; color: var(--gold); font-weight: 600; }
+  .article__title { margin-top: 0.5rem; color: var(--plum); font-size: clamp(2rem, 5vw, 3.2rem); }
+  .article__lead { margin-top: 1rem; color: color-mix(in oklab, var(--ink) 80%, transparent); }
+  .article__cover { margin-block: 0.5rem 2.5rem; }
+  .article__img { width: 100%; max-width: 44rem; margin-inline: auto; border-radius: 1.25rem; display: block; }
+
+  .prose { max-width: 44rem; margin-inline: auto; padding-bottom: 1.5rem; font-size: 1.05rem; line-height: 1.8; }
+  .prose :global(h2) {
+    font-family: var(--font-display); color: var(--plum);
+    font-size: 1.6rem; margin-top: 2.25rem; margin-bottom: 0.75rem;
+  }
+  .prose :global(p) { margin-bottom: 1.1rem; color: color-mix(in oklab, var(--ink) 90%, transparent); }
+  .prose :global(ul) { margin: 0 0 1.1rem 1.25rem; display: grid; gap: 0.4rem; }
+  .prose :global(li) { line-height: 1.7; }
+  .prose :global(strong) { color: var(--plum); }
+  .prose :global(a) { color: var(--plum); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--gold) 60%, transparent); }
+</style>

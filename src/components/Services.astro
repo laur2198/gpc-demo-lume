@@ -1,29 +1,6 @@
 ---
 import Img from './Img.astro';
-
-const services = [
-  {
-    title: 'Extensii de gene',
-    tags: 'Classic · Hybrid · Volume',
-    desc: 'Gene dese, naturale sau dramatice, adaptate formei ochiului tău.',
-    img: 'lash',
-    alt: 'Aplicare extensii de gene, fir cu fir, în studio',
-  },
-  {
-    title: 'Sprâncene',
-    tags: 'Laminare · henna · stilizare',
-    desc: 'Sprâncene definite care-ți pun fața în valoare, fără machiaj zilnic.',
-    img: 'brow',
-    alt: 'Sprâncene definite, stilizate, în prim-plan',
-  },
-  {
-    title: 'Îngrijire ten',
-    tags: 'Tratamente faciale · curățare profundă',
-    desc: 'Piele curată, hidratată, luminoasă — protocol personalizat.',
-    img: 'skin',
-    alt: 'Ten luminos, hidratat, după tratament facial',
-  },
-];
+import { services } from '../data/services';
 ---
 <section id="servicii" class="section services">
   <div class="section__inner">
@@ -34,14 +11,15 @@ const services = [
 
     <div class="services__grid">
       {services.map((s, i) => (
-        <article class="card service" data-reveal data-reveal-delay={i + 1}>
+        <a class="card service" href={`/servicii/${s.slug}/`} data-reveal data-reveal-delay={i + 1}>
           <Img name={s.img} ratio="4 / 3" alt={s.alt} sizes="(min-width: 768px) 33vw, 100vw" widths={[320, 480, 640]} class="service__img" />
           <div class="service__body">
             <h3 class="service__title">{s.title}</h3>
             <p class="service__tags">{s.tags}</p>
-            <p class="service__desc">{s.desc}</p>
+            <p class="service__desc">{s.short}</p>
+            <span class="service__more">Vezi detalii →</span>
           </div>
-        </article>
+        </a>
       ))}
     </div>
   </div>
@@ -59,11 +37,21 @@ const services = [
 
   .services__grid { display: grid; gap: 1.5rem; }
   .card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     background: color-mix(in oklab, var(--cream) 92%, white);
     border: 1px solid color-mix(in oklab, var(--plum) 8%, transparent);
     border-radius: 1.25rem;
     overflow: hidden;
     transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .service__more {
+    display: inline-block;
+    margin-top: 0.9rem;
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 0.9rem;
   }
   .card:hover {
     transform: translateY(-4px);
