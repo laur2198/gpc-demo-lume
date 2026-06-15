@@ -1,9 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
-import ConceptBanner from '../../components/ConceptBanner.astro';
-import Nav from '../../components/Nav.astro';
-import Footer from '../../components/Footer.astro';
-import BookingBand from '../../components/BookingBand.astro';
+import ConceptBanner from '../../components/lume/ConceptBanner.astro';
+import Nav from '../../components/lume/Nav.astro';
+import Footer from '../../components/lume/Footer.astro';
+import BookingModal from '../../components/lume/BookingModal.astro';
+import CtaBand from '../../components/lume/CtaBand.astro';
 import Img from '../../components/Img.astro';
 import { getCollection, render } from 'astro:content';
 
@@ -15,53 +16,71 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const fmt = (d: Date) => d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
+const CATEGORY: Record<string, string> = { lash: 'Gene', brow: 'Sprâncene', skin: 'Ten' };
+const category = CATEGORY[post.data.cover] ?? 'Articol';
 ---
 <Base title={`${post.data.title} — LUMÉ Studio`} description={post.data.description}>
   <ConceptBanner />
   <Nav />
   <main>
-    <article class="article">
-      <div class="container article__head">
-        <a class="back" href="/blog/">← Blog</a>
-        <p class="article__meta">{fmt(post.data.date)} · {post.data.readingMinutes} min</p>
-        <h1 class="h1 article__title">{post.data.title}</h1>
-        <p class="lead article__lead">{post.data.description}</p>
+    <article class="lume-article">
+      <div class="container lume-article-head" data-reveal>
+        <a class="lume-back" href="/blog/">← Blog</a>
+        <span class="eyebrow eyebrow--rule lume-article-cat">{category}</span>
+        <h1 class="h1 lume-article-title">{post.data.title}</h1>
+        <p class="lead lume-article-lead">{post.data.description}</p>
+        <span class="lume-article-meta">{fmt(post.data.date)} · {post.data.readingMinutes} min de citit</span>
       </div>
 
-      <div class="container article__cover">
-        <Img name={post.data.cover} ratio="16 / 9" alt={post.data.coverAlt} eager sizes="(min-width: 768px) 720px, 100vw" widths={[480, 720, 960]} class="article__img" />
+      <div class="container lume-article-cover" data-reveal>
+        <div class="lume-article-frame reveal-img">
+          <Img name={post.data.cover} ratio="16 / 9" alt={post.data.coverAlt} eager sizes="(min-width: 768px) 760px, 100vw" widths={[480, 760, 1040]} />
+        </div>
       </div>
 
       <div class="container">
-        <div class="prose">
+        <div class="lume-prose">
           <Content />
         </div>
       </div>
     </article>
 
-    <BookingBand />
+    <CtaBand title="Pregătită pentru programare?" text="Scrie-ne pe WhatsApp sau lasă-ne un mesaj rapid." />
   </main>
   <Footer />
+  <BookingModal />
 </Base>
 
 <style>
-  .article__head { max-width: 44rem; padding-block: 2.5rem 1.5rem; }
-  .back { color: var(--gold); font-weight: 600; text-decoration: none; font-size: 0.9rem; }
-  .back:hover { text-decoration: underline; }
-  .article__meta { margin-top: 1.25rem; font-size: 0.85rem; letter-spacing: 0.04em; color: var(--gold); font-weight: 600; }
-  .article__title { margin-top: 0.5rem; color: var(--plum); font-size: clamp(2rem, 5vw, 3.2rem); }
-  .article__lead { margin-top: 1rem; color: color-mix(in oklab, var(--ink) 80%, transparent); }
-  .article__cover { margin-block: 0.5rem 2.5rem; }
-  .article__img { width: 100%; max-width: 44rem; margin-inline: auto; border-radius: 1.25rem; display: block; }
+  .lume-article { padding-top: clamp(2rem, 5vw, 3.5rem); }
+  .lume-article-head { max-width: 44rem; display: flex; flex-direction: column; gap: var(--space-4); }
+  .lume-back { color: var(--gold); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; }
+  .lume-back:hover { text-decoration: underline; }
+  .lume-article-cat { color: var(--gold); margin-top: var(--space-2); }
+  .lume-article-title { margin: 0; }
+  .lume-article-lead { margin: 0; }
+  .lume-article-meta { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
 
-  .prose { max-width: 44rem; margin-inline: auto; padding-bottom: 1.5rem; font-size: 1.05rem; line-height: 1.8; }
-  .prose :global(h2) {
-    font-family: var(--font-display); color: var(--plum);
-    font-size: 1.6rem; margin-top: 2.25rem; margin-bottom: 0.75rem;
+  .lume-article-cover { margin-block: clamp(2rem, 4vw, 3rem); }
+  .lume-article-frame {
+    max-width: 52rem; margin-inline: auto; border-radius: var(--radius-xl);
+    overflow: hidden; box-shadow: var(--shadow-md); aspect-ratio: 16 / 9;
   }
-  .prose :global(p) { margin-bottom: 1.1rem; color: color-mix(in oklab, var(--ink) 90%, transparent); }
-  .prose :global(ul) { margin: 0 0 1.1rem 1.25rem; display: grid; gap: 0.4rem; }
-  .prose :global(li) { line-height: 1.7; }
-  .prose :global(strong) { color: var(--plum); }
-  .prose :global(a) { color: var(--plum); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--gold) 60%, transparent); }
+  .lume-article-frame :global(picture) { display: block; width: 100%; height: 100%; }
+  .lume-article-frame :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .lume-prose {
+    max-width: 40rem; margin-inline: auto; padding-bottom: var(--space-8);
+    font-size: 1.0625rem; line-height: 1.8; color: var(--text-body);
+  }
+  .lume-prose :global(h2) {
+    font-family: var(--font-display); color: var(--text-heading);
+    font-size: var(--text-h3); line-height: var(--leading-snug);
+    margin-top: var(--space-10); margin-bottom: var(--space-3);
+  }
+  .lume-prose :global(p) { margin: 0 0 var(--space-5); color: color-mix(in oklab, var(--ink) 90%, var(--cream)); }
+  .lume-prose :global(ul) { margin: 0 0 var(--space-5) 1.25rem; display: grid; gap: 0.5rem; }
+  .lume-prose :global(li) { line-height: 1.7; }
+  .lume-prose :global(strong) { color: var(--plum); }
+  .lume-prose :global(a) { color: var(--plum); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--gold) 60%, transparent); }
 </style>
