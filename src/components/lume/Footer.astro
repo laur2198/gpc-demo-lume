@@ -1,0 +1,59 @@
+---
+const links = [
+  ['/servicii/', 'Servicii'],
+  ['/preturi/', 'Prețuri'],
+  ['/contact/', 'Contact'],
+];
+---
+<footer class="lume-footer" transition:persist>
+  <div class="container lume-footer-inner">
+    <div class="lume-footer-top">
+      <div class="lume-footer-brand">
+        <span class="lume-footer-word">LUM<span>É</span></span>
+        <p class="lume-footer-tag">Studio de înfrumusețare în Brașov — gene, sprâncene și îngrijirea tenului, fără grabă.</p>
+      </div>
+      <nav class="lume-footer-nav">
+        {links.map(([href, label]) => <a href={href}>{label}</a>)}
+      </nav>
+    </div>
+    <div class="lume-footer-bottom">
+      <span>© 2026 LUMÉ Studio · Str. Republicii 12, Brașov</span>
+      <span>Proiect concept realizat de Green Phoenix Concept.</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .lume-footer { background: var(--ink); color: var(--cream); padding-block: var(--space-16); }
+  .lume-footer-inner { display: flex; flex-direction: column; gap: var(--space-10); }
+  .lume-footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-8);
+  }
+  .lume-footer-brand { display: flex; flex-direction: column; gap: var(--space-3); max-width: 30ch; }
+  .lume-footer-word { font-family: var(--font-display); font-weight: 500; font-size: 2rem; color: var(--cream); }
+  .lume-footer-word span { color: var(--gold); }
+  .lume-footer-tag { margin: 0; color: color-mix(in oklab, var(--cream) 60%, var(--ink)); line-height: var(--leading-body); }
+  .lume-footer-nav { display: flex; flex-wrap: wrap; gap: var(--space-6); }
+  .lume-footer-nav a {
+    text-decoration: none;
+    color: color-mix(in oklab, var(--cream) 70%, var(--ink));
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .lume-footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    color: color-mix(in oklab, var(--cream) 50%, var(--ink));
+    font-size: var(--text-sm);
+    border-top: 1px solid color-mix(in oklab, var(--cream) 16%, transparent);
+    padding-top: var(--space-6);
+  }
+</style>

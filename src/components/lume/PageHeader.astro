@@ -1,0 +1,34 @@
+---
+// Light editorial page header (no full-bleed hero). Eyebrow rule + Fraunces
+// title with an optional italic-gold accent word + subtitle + optional slot.
+interface Props {
+  eyebrow: string;
+  title: string;
+  accent?: string;   // substring of title to italicize in gold
+  subtitle?: string;
+}
+const { eyebrow, title, accent, subtitle } = Astro.props;
+
+let before = title, em = '', after = '';
+if (accent && title.includes(accent)) {
+  const idx = title.indexOf(accent);
+  before = title.slice(0, idx);
+  em = accent;
+  after = title.slice(idx + accent.length);
+}
+---
+<header class="lume-ph">
+  <div class="container lume-ph-inner" data-reveal>
+    <span class="eyebrow eyebrow--rule">{eyebrow}</span>
+    <h1 class="h1 lume-ph-title">{before}{em && <em>{em}</em>}{after}</h1>
+    {subtitle && <p class="lead lume-ph-sub">{subtitle}</p>}
+    <slot />
+  </div>
+</header>
+
+<style>
+  .lume-ph { padding-block: clamp(3rem, 7vw, 6rem) clamp(2rem, 4vw, 3.5rem); }
+  .lume-ph-inner { display: flex; flex-direction: column; gap: var(--space-5); max-width: 50rem; }
+  .lume-ph-title { margin: 0; max-width: 18ch; }
+  .lume-ph-sub { margin: 0; max-width: 52ch; }
+</style>

@@ -1,0 +1,116 @@
+---
+import Img from '../Img.astro';
+
+const SERVICES = [
+  {
+    tag: '01 · Extensii de gene', name: 'Extensii de gene', emph: 'gene',
+    desc: 'Aplicăm fir cu fir, adaptat formei ochiului și densității genelor tale naturale. Classic, Hybrid sau Volume — o privire deschisă care arată impecabil dimineața la fel ca seara.',
+    variants: ['Classic', 'Hybrid', 'Volume'], priceFrom: 180, img: 'lash',
+  },
+  {
+    tag: '02 · Sprâncene', name: 'Sprâncene definite', emph: 'definite',
+    desc: 'Conturăm și definim după forma feței tale. De la laminare pentru un look pieptănat și plin, la henna și stilizare pentru o definire de durată — fără machiaj zilnic.',
+    variants: ['Laminare', 'Henna', 'Stilizare'], priceFrom: 80, img: 'brow',
+  },
+  {
+    tag: '03 · Îngrijire ten', name: 'Îngrijire ten', emph: 'ten',
+    desc: 'Analizăm tipul tenului și construim un protocol personalizat: curățare profundă, hidratare și luminozitate. Un ritual relaxant cu rezultate vizibile de la prima ședință.',
+    variants: ['Tratamente faciale', 'Curățare profundă', 'Hidratare'], priceFrom: 160, img: 'skin',
+  },
+];
+
+function splitEmph(name: string, emph: string) {
+  if (!emph || !name.includes(emph)) return { before: name, emph: '', after: '' };
+  const [before, after] = name.split(emph);
+  return { before, emph, after };
+}
+---
+<section id="servicii" class="lume-services">
+  <div class="container">
+    <div class="lume-srv-head" data-reveal>
+      <span class="eyebrow">Servicii</span>
+      <h2 class="h2">Trei ritualuri, <em>atenție</em> la detaliu.</h2>
+    </div>
+
+    <div class="lume-srv-list">
+      {SERVICES.map((s, i) => {
+        const n = splitEmph(s.name, s.emph);
+        return (
+          <div class:list={['lume-srv', i % 2 === 1 && 'is-rev']} data-reveal>
+            <div class="lume-srv-img reveal-img">
+              <Img name={s.img} alt={s.name} ratio="5 / 4" sizes="(min-width: 860px) 45vw, 100vw" widths={[480, 640, 860]} />
+            </div>
+            <div class="lume-srv-txt">
+              <span class="eyebrow">{s.tag}</span>
+              <h3 class="h2">{n.before}<em>{n.emph}</em>{n.after}</h3>
+              <p class="lume-srv-desc">{s.desc}</p>
+              <div class="lume-srv-variants">
+                {s.variants.map((v) => <span class="lume-pill">{v}</span>)}
+              </div>
+              <div class="lume-srv-foot">
+                <div class="lume-srv-price">
+                  <span class="eyebrow lume-srv-from">de la</span>
+                  <span class="lume-srv-amount">{s.priceFrom} lei</span>
+                </div>
+                <button type="button" class="btn btn--ghost" data-book>Rezervă</button>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lume-services { background: var(--surface-alt); padding-block: var(--section-y); }
+  .lume-srv-head { margin-bottom: var(--space-16); max-width: 44ch; }
+  .lume-srv-head .h2 { margin-top: var(--space-4); }
+  .lume-srv-list { display: flex; flex-direction: column; gap: clamp(3.5rem, 8vw, 7rem); }
+
+  .lume-srv {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .lume-srv.is-rev .lume-srv-img { order: 2; }
+
+  .lume-srv-img {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    aspect-ratio: 5 / 4;
+  }
+  .lume-srv-img :global(picture) { display: block; width: 100%; height: 100%; }
+  .lume-srv-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .lume-srv-img:hover :global(img) { transform: scale(1.04); transition: transform 0.6s var(--ease-out); }
+
+  .lume-srv-txt { display: flex; flex-direction: column; gap: var(--space-5); }
+  .lume-srv-desc { margin: 0; color: var(--text-muted); line-height: var(--leading-body); max-width: 42ch; }
+  .lume-srv-variants { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .lume-pill {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--plum);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 0.85rem;
+  }
+  .lume-srv-foot { display: flex; align-items: center; gap: var(--space-5); margin-top: var(--space-2); }
+  .lume-srv-price { display: flex; align-items: baseline; gap: 0.4em; }
+  .lume-srv-from { color: var(--text-muted); }
+  .lume-srv-amount {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    color: var(--text-heading);
+    line-height: 1;
+  }
+
+  @media (max-width: 860px) {
+    .lume-srv { grid-template-columns: 1fr; gap: var(--space-8); }
+    .lume-srv.is-rev .lume-srv-img { order: 0; }
+  }
+</style>

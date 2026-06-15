@@ -1,12 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
-import ConceptBanner from '../components/ConceptBanner.astro';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
-import PageHeader from '../components/PageHeader.astro';
+import ConceptBanner from '../components/lume/ConceptBanner.astro';
+import Nav from '../components/lume/Nav.astro';
+import Footer from '../components/lume/Footer.astro';
+import BookingModal from '../components/lume/BookingModal.astro';
+import PageHeader from '../components/lume/PageHeader.astro';
 
 const phone = '0700 000 000';
 const wa = 'https://wa.me/40700000000';
+
+const info = [
+  { label: 'WhatsApp', value: 'Scrie-ne pe WhatsApp', href: wa, ext: true },
+  { label: 'Telefon', value: phone, href: 'tel:0700000000' },
+  { label: 'Email', value: 'contact@lume-concept.ro', href: 'mailto:contact@lume-concept.ro' },
+  { label: 'Program', value: 'Luni–Sâmbătă · 09:00–19:00' },
+  { label: 'Adresă', value: 'Str. Republicii 12, Brașov' },
+];
 ---
 <Base
   title="Contact — LUMÉ Studio"
@@ -18,44 +27,33 @@ const wa = 'https://wa.me/40700000000';
     <PageHeader
       eyebrow="Contact"
       title="Hai să ne cunoaștem."
+      accent="cunoaștem"
       subtitle="Cel mai rapid răspuns îl primești pe WhatsApp. Te așteptăm într-un spațiu intim, fără grabă."
     />
 
-    <section class="section">
-      <div class="container contact">
-        <div class="contact__info" data-reveal>
-          <ul class="info">
-            <li>
-              <span class="info__label">WhatsApp</span>
-              <a class="info__value" href={wa} rel="noopener" target="_blank">Scrie-ne pe WhatsApp</a>
-            </li>
-            <li>
-              <span class="info__label">Telefon</span>
-              <a class="info__value" href="tel:0700000000">{phone}</a>
-            </li>
-            <li>
-              <span class="info__label">Email</span>
-              <a class="info__value" href="mailto:contact@lume-concept.ro">contact@lume-concept.ro</a>
-            </li>
-            <li>
-              <span class="info__label">Program</span>
-              <span class="info__value">Luni–Sâmbătă · 09:00–19:00</span>
-            </li>
-            <li>
-              <span class="info__label">Adresă</span>
-              <span class="info__value">Str. Republicii 12, Brașov</span>
-            </li>
+    <section class="lume-sec lume-sec--top">
+      <div class="container lume-contact">
+        <div class="lume-contact-info" data-reveal>
+          <ul class="lume-info">
+            {info.map((it) => (
+              <li>
+                <span class="lume-info-label">{it.label}</span>
+                {it.href
+                  ? <a class="lume-info-value" href={it.href} {...(it.ext ? { rel: 'noopener', target: '_blank' } : {})}>{it.value}</a>
+                  : <span class="lume-info-value">{it.value}</span>}
+              </li>
+            ))}
           </ul>
         </div>
 
-        <div class="contact__form-wrap" data-reveal data-reveal-delay="1">
-          <form class="form" id="wa-form">
-            <p class="form__intro">Spune-ne pe scurt ce îți dorești — îți deschidem o conversație pe WhatsApp cu mesajul precompletat.</p>
-            <label class="field">
+        <div class="lume-form-wrap" data-reveal data-reveal-delay="1">
+          <form class="lume-form" id="wa-form">
+            <p class="lume-form-intro">Spune-ne pe scurt ce îți dorești — îți deschidem o conversație pe WhatsApp cu mesajul precompletat.</p>
+            <label class="lume-field">
               <span>Nume</span>
               <input type="text" name="nume" required autocomplete="name" />
             </label>
-            <label class="field">
+            <label class="lume-field">
               <span>Serviciu dorit</span>
               <select name="serviciu">
                 <option>Extensii de gene</option>
@@ -64,30 +62,31 @@ const wa = 'https://wa.me/40700000000';
                 <option>Nu sunt sigură</option>
               </select>
             </label>
-            <label class="field">
+            <label class="lume-field">
               <span>Mesaj</span>
               <textarea name="mesaj" rows="3" placeholder="Ex: aș dori o programare săptămâna viitoare după-amiaza."></textarea>
             </label>
-            <button type="submit" class="btn btn--primary form__submit">Trimite pe WhatsApp</button>
-            <noscript><p class="form__ns">Sau scrie-ne direct: <a href={wa}>WhatsApp</a> · <a href="tel:0700000000">{phone}</a></p></noscript>
+            <button type="submit" class="btn btn--primary btn--lg lume-form-submit">Trimite pe WhatsApp</button>
+            <noscript><p class="lume-form-ns">Sau scrie-ne direct: <a href={wa}>WhatsApp</a> · <a href="tel:0700000000">{phone}</a></p></noscript>
           </form>
         </div>
       </div>
     </section>
 
-    <section class="section section--alt">
+    <section class="lume-sec lume-sec--alt">
       <div class="container">
-        <div class="map" data-reveal role="img" aria-label="Hartă orientativă — Str. Republicii 12, Brașov">
-          <div class="map__grid" aria-hidden="true"></div>
-          <div class="map__pin" aria-hidden="true">
+        <div class="lume-map" data-reveal role="img" aria-label="Hartă orientativă — Str. Republicii 12, Brașov">
+          <div class="lume-map-grid" aria-hidden="true"></div>
+          <div class="lume-map-pin" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
           </div>
-          <span class="map__label">Str. Republicii 12, Brașov</span>
+          <span class="lume-map-label">Str. Republicii 12, Brașov</span>
         </div>
       </div>
     </section>
   </main>
   <Footer />
+  <BookingModal />
 </Base>
 
 <script is:inline>
@@ -107,56 +106,59 @@ const wa = 'https://wa.me/40700000000';
 </script>
 
 <style>
-  .section { padding-block: 3.5rem; }
-  .section--alt { background: color-mix(in oklab, var(--blush) 26%, var(--cream)); }
+  .lume-sec { padding-block: var(--section-y); }
+  .lume-sec--top { padding-top: clamp(1rem, 3vw, 2rem); }
+  .lume-sec--alt { background: var(--surface-alt); }
 
-  .contact { display: grid; gap: 2.5rem; }
-  .info { list-style: none; display: grid; gap: 1.4rem; }
-  .info li { display: grid; gap: 0.2rem; }
-  .info__label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
-  .info__value { font-size: 1.1rem; color: var(--ink); text-decoration: none; }
-  a.info__value:hover { color: var(--plum); }
+  .lume-contact { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
 
-  .form { display: grid; gap: 1rem; max-width: 32rem; }
-  .form__intro { line-height: 1.6; color: color-mix(in oklab, var(--ink) 82%, transparent); }
-  .field { display: grid; gap: 0.35rem; }
-  .field > span { font-size: 0.85rem; font-weight: 600; color: var(--plum); }
-  .field input, .field select, .field textarea {
-    font: inherit; padding: 0.7rem 0.9rem; border-radius: 0.7rem;
-    border: 1px solid color-mix(in oklab, var(--plum) 20%, transparent);
-    background: var(--cream); color: var(--ink); width: 100%;
+  .lume-info { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-6); }
+  .lume-info li { display: grid; gap: 0.3rem; }
+  .lume-info-label { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+  .lume-info-value { font-size: var(--text-lead); color: var(--text-body); text-decoration: none; }
+  a.lume-info-value:hover { color: var(--plum); }
+
+  .lume-form-wrap {
+    background: var(--surface-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
   }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    outline: 2px solid color-mix(in oklab, var(--gold) 70%, transparent); outline-offset: 1px;
+  .lume-form { display: grid; gap: var(--space-4); max-width: 34rem; }
+  .lume-form-intro { margin: 0; line-height: var(--leading-body); color: var(--text-muted); }
+  .lume-field { display: grid; gap: 0.4rem; }
+  .lume-field > span { font-size: var(--text-sm); font-weight: 600; color: var(--text-heading); }
+  .lume-field input, .lume-field select, .lume-field textarea {
+    font: inherit; padding: 0.75rem 1rem; border-radius: var(--radius-md);
+    border: 1px solid var(--border-strong); background: var(--cream); color: var(--ink); width: 100%;
   }
-  .form__submit { margin-top: 0.5rem; justify-self: start; }
-  .form__ns { margin-top: 0.5rem; }
-  .form__ns a { color: var(--plum); }
+  .lume-field input:focus, .lume-field select:focus, .lume-field textarea:focus {
+    outline: 2px solid var(--focus-ring); outline-offset: 1px;
+  }
+  .lume-form-submit { margin-top: var(--space-2); justify-self: start; }
+  .lume-form-ns { margin-top: 0.5rem; }
+  .lume-form-ns a { color: var(--plum); }
 
-  .map {
-    position: relative; height: 320px; border-radius: 1.25rem; overflow: hidden;
-    background:
-      radial-gradient(80% 80% at 50% 40%, color-mix(in oklab, var(--blush) 60%, var(--cream)), var(--cream));
+  .lume-map {
+    position: relative; height: 340px; border-radius: var(--radius-xl); overflow: hidden;
+    background: radial-gradient(80% 80% at 50% 40%, color-mix(in oklab, var(--blush) 60%, var(--cream)), var(--cream));
     display: grid; place-items: center; isolation: isolate;
   }
-  .map__grid {
+  .lume-map-grid {
     position: absolute; inset: 0; z-index: -1; opacity: 0.5;
     background-image:
       linear-gradient(color-mix(in oklab, var(--plum) 10%, transparent) 1px, transparent 1px),
       linear-gradient(90deg, color-mix(in oklab, var(--plum) 10%, transparent) 1px, transparent 1px);
     background-size: 40px 40px;
   }
-  .map__pin { color: var(--plum); filter: drop-shadow(0 6px 10px color-mix(in oklab, var(--plum) 40%, transparent)); }
-  .map__pin svg { width: 3rem; height: 3rem; }
-  .map__label {
+  .lume-map-pin { color: var(--plum); filter: drop-shadow(0 6px 10px color-mix(in oklab, var(--plum) 40%, transparent)); }
+  .lume-map-pin svg { width: 3rem; height: 3rem; }
+  .lume-map-label {
     position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
-    background: var(--cream); color: var(--plum); font-weight: 600; font-size: 0.9rem;
-    padding: 0.4rem 0.9rem; border-radius: 999px;
-    box-shadow: 0 8px 20px -10px color-mix(in oklab, var(--plum) 50%, transparent);
+    background: var(--cream); color: var(--plum); font-weight: 600; font-size: var(--text-sm);
+    padding: 0.45rem 1rem; border-radius: var(--radius-pill); box-shadow: var(--shadow-sm);
   }
 
-  @media (min-width: 820px) {
-    .section { padding-block: 4.5rem; }
-    .contact { grid-template-columns: 0.8fr 1.2fr; gap: 3rem; }
-  }
+  @media (max-width: 820px) { .lume-contact { grid-template-columns: 1fr; } }
 </style>

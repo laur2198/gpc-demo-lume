@@ -1,0 +1,64 @@
+---
+import Icon from './Icon.astro';
+
+const DETAILS = [
+  { icon: 'clock', label: 'Program', value: 'Luni–Sâmbătă · 09:00–19:00' },
+  { icon: 'phone', label: 'Telefon', value: '0700 000 000' },
+  { icon: 'map-pin', label: 'Adresă', value: 'Str. Republicii 12, Brașov' },
+];
+---
+<section id="contact" class="lume-contact">
+  <div class="container lume-contact-grid">
+    <div class="lume-contact-copy" data-reveal>
+      <h2 class="h2">Programează-te în câteva secunde.</h2>
+      <p class="lume-contact-sub">Răspundem rapid pe WhatsApp.</p>
+      <div class="lume-contact-actions">
+        <a href="https://wa.me/40700000000" class="btn btn--gold btn--lg">
+          <span class="lume-btn-ico"><Icon name="message-circle" size={18} /></span>
+          Scrie-ne pe WhatsApp
+        </a>
+        <button type="button" class="btn btn--ghost btn--lg lume-contact-ghost" data-book>Formular rapid</button>
+      </div>
+    </div>
+    <div class="lume-contact-details" data-reveal data-reveal-delay="1">
+      {DETAILS.map((d) => (
+        <div class="lume-detail">
+          <span class="lume-detail-ico"><Icon name={d.icon} size={20} /></span>
+          <div>
+            <div class="lume-detail-label">{d.label}</div>
+            <div class="lume-detail-value">{d.value}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lume-contact { background: var(--surface-inverse); padding-block: var(--section-y); }
+  .lume-contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); align-items: center; }
+  .lume-contact-copy { display: flex; flex-direction: column; gap: var(--space-6); max-width: 30ch; }
+  .lume-contact-copy .h2 { color: var(--cream); }
+  .lume-contact-sub { margin: 0; color: var(--text-on-dark-muted); font-size: var(--text-lead); line-height: var(--leading-body); }
+  .lume-contact-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .lume-btn-ico { display: inline-flex; }
+  .lume-contact-ghost { color: var(--cream); border-color: var(--hairline-dark); }
+
+  .lume-contact-details { display: flex; flex-direction: column; gap: var(--space-5); }
+  .lume-detail { display: flex; gap: var(--space-4); align-items: center; }
+  .lume-detail-ico {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-pill);
+    flex: none;
+    background: color-mix(in oklab, var(--cream) 12%, transparent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+  }
+  .lume-detail-label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-on-dark-muted); }
+  .lume-detail-value { color: var(--cream); font-size: var(--text-lead); }
+
+  @media (max-width: 820px) { .lume-contact-grid { grid-template-columns: 1fr; } }
+</style>

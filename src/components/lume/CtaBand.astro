@@ -1,0 +1,41 @@
+---
+import Icon from './Icon.astro';
+interface Props { title?: string; text?: string; }
+const {
+  title = 'Programează-te în câteva secunde.',
+  text = 'Răspundem rapid pe WhatsApp.',
+} = Astro.props;
+---
+<section class="lume-cta-band">
+  <div class="container lume-cta-inner" data-reveal>
+    <span class="eyebrow eyebrow--rule lume-cta-eyebrow">Programare</span>
+    <h2 class="h2 lume-cta-title">{title}</h2>
+    <p class="lume-cta-text">{text}</p>
+    <div class="lume-cta-actions">
+      <a href="https://wa.me/40700000000" class="btn btn--gold btn--lg">
+        <span class="lume-btn-ico"><Icon name="message-circle" size={18} /></span>
+        Scrie-ne pe WhatsApp
+      </a>
+      <button type="button" class="btn btn--ghost btn--lg lume-cta-ghost" data-book>Formular rapid</button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lume-cta-band { background: var(--surface-inverse); padding-block: var(--section-y); }
+  .lume-cta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-5);
+    max-width: 40rem;
+    margin-inline: auto;
+  }
+  .lume-cta-eyebrow { color: var(--gold); }
+  .lume-cta-title { color: var(--cream); margin: 0; }
+  .lume-cta-text { margin: 0; color: var(--text-on-dark-muted); font-size: var(--text-lead); }
+  .lume-cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); margin-top: var(--space-2); }
+  .lume-btn-ico { display: inline-flex; }
+  .lume-cta-ghost { color: var(--cream); border-color: var(--hairline-dark); }
+</style>

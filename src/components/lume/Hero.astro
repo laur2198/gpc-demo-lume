@@ -1,0 +1,128 @@
+---
+import Img from '../Img.astro';
+---
+<section id="top" class="lume-hero">
+  <Img
+    name="hero"
+    alt="Ochi cu extensii de gene lungi, naturale"
+    eager
+    class="lume-hero-img"
+    sizes="100vw"
+    widths={[768, 1024, 1440, 1920]}
+    ratio="16 / 9"
+  />
+  <div class="lume-hero-scrim" aria-hidden="true"></div>
+  <div class="lume-hero-bloom" aria-hidden="true"></div>
+
+  <div class="container lume-hero-inner">
+    <div class="lume-hero-copy">
+      <span class="eyebrow">Studio de înfrumusețare · Brașov</span>
+      <h1 class="h-display">Privirea ta, <em>în cea mai bună formă.</em></h1>
+      <p class="lead lume-hero-sub">Extensii de gene, stilizare sprâncene și îngrijirea tenului — într-un spațiu intim, cu tehnicieni certificați.</p>
+      <div class="lume-hero-cta">
+        <button type="button" class="btn btn--primary btn--lg" data-book>Rezervă o programare</button>
+        <a href="#servicii" class="btn btn--ghost btn--lg">Vezi serviciile</a>
+      </div>
+    </div>
+  </div>
+
+  <a href="#studioul" class="lume-hero-cue" aria-label="Derulează">
+    <span class="eyebrow">Derulează</span>
+    <span class="lume-hero-cue-bar" aria-hidden="true"></span>
+  </a>
+</section>
+
+<style>
+  .lume-hero {
+    position: relative;
+    min-height: min(92vh, 820px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .lume-hero :global(.lume-hero-img),
+  .lume-hero :global(.lume-hero-img img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 65% center;
+  }
+  .lume-hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg,
+      var(--cream) 0%,
+      color-mix(in oklab, var(--cream) 86%, transparent) 32%,
+      color-mix(in oklab, var(--cream) 30%, transparent) 56%,
+      transparent 78%);
+  }
+  .lume-hero-bloom {
+    position: absolute;
+    top: -12%;
+    right: -6%;
+    width: 52%;
+    height: 70%;
+    background: radial-gradient(closest-side,
+      color-mix(in oklab, #fff 65%, transparent),
+      color-mix(in oklab, var(--gold) 16%, transparent) 55%,
+      transparent 75%);
+    pointer-events: none;
+    filter: blur(6px);
+  }
+  .lume-hero-inner { position: relative; width: 100%; }
+  .lume-hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 30ch;
+  }
+  .lume-hero-sub { color: var(--ink); max-width: 40ch; }
+  .lume-hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+  .lume-hero-cue {
+    position: absolute;
+    bottom: 1.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--plum);
+  }
+  .lume-hero-cue .eyebrow { font-size: 0.625rem; }
+  .lume-hero-cue-bar {
+    width: 1px;
+    height: 2.25rem;
+    background: var(--plum);
+    opacity: 0.5;
+    animation: lume-cue 1.8s var(--ease-out) infinite;
+  }
+
+  @keyframes lume-cue {
+    0%, 100% { transform: scaleY(.5); transform-origin: top; opacity: .3; }
+    50% { transform: scaleY(1); opacity: .6; }
+  }
+  @keyframes lume-hero-in {
+    from { opacity: 0; transform: translateY(20px); filter: blur(6px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  :global(html.js) .lume-hero-copy > * { opacity: 0; animation: lume-hero-in 0.9s var(--ease-out) forwards; }
+  :global(html.js) .lume-hero-copy > *:nth-child(1) { animation-delay: 0.15s; }
+  :global(html.js) .lume-hero-copy > *:nth-child(2) { animation-delay: 0.30s; }
+  :global(html.js) .lume-hero-copy > *:nth-child(3) { animation-delay: 0.48s; }
+  :global(html.js) .lume-hero-copy > *:nth-child(4) { animation-delay: 0.64s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lume-hero-cue-bar { animation: none !important; }
+    :global(html.js) .lume-hero-copy > * { opacity: 1 !important; animation: none !important; }
+  }
+  @media (max-width: 600px) { .lume-hero { min-height: 86vh; } }
+</style>

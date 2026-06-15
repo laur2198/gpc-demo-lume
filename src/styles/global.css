@@ -1,87 +1,246 @@
 @import "tailwindcss";
 @import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/fraunces/standard-italic.css";
 @import "@fontsource-variable/inter";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
 
+/* ============================================================
+   LUMÉ — Design tokens (warm, muted, editorial beauty palette)
+   Ported 1:1 from the brand design-system bundle.
+   ============================================================ */
 :root {
-  --blush: #E8D5CE;
-  --plum:  #4A2C3A;
-  --cream: #FAF6F2;
-  --gold:  #C9A77C;
-  --ink:   #2B2422;
+  /* ----- Base brand palette ----- */
+  --blush: #E8D5CE;        /* soft pink-beige */
+  --blush-soft: #F0E2DB;   /* lighter blush wash */
+  --plum:  #4A2C3A;        /* deep mauve — primary brand */
+  --cream: #FAF6F2;        /* warm off-white page ground */
+  --cream2: #F3E9E2;       /* warmer cream — alternating sections */
+  --gold:  #C9A77C;        /* muted antique gold — accent */
+  --ink:   #2B2422;        /* warm near-black — body text */
+  --white: #FFFFFF;
+
+  /* ----- Derived tints (warm, oklab-mixed) ----- */
+  --blush-50:  color-mix(in oklab, var(--blush) 35%, var(--cream));
+  --blush-100: color-mix(in oklab, var(--blush) 60%, var(--cream));
+  --plum-700:  color-mix(in oklab, var(--plum) 90%, black);
+  --plum-300:  color-mix(in oklab, var(--plum) 45%, transparent);
+  --gold-soft: color-mix(in oklab, var(--gold) 30%, var(--cream));
+
+  /* ----- Semantic surfaces ----- */
+  --surface-page:   var(--cream);
+  --surface-card:   var(--white);
+  --surface-raised: var(--blush-50);
+  --surface-alt:    var(--cream2);
+  --surface-inverse:var(--plum);
+
+  /* ----- Semantic text ----- */
+  --text-body:      var(--ink);
+  --text-heading:   var(--plum);
+  --text-muted:     color-mix(in oklab, var(--ink) 58%, var(--cream));
+  --text-on-dark:   var(--cream);
+  --text-on-dark-muted: color-mix(in oklab, var(--cream) 70%, var(--plum));
+  --text-accent:    var(--gold);
+
+  /* ----- Lines & borders ----- */
+  --border-soft:   color-mix(in oklab, var(--plum) 14%, transparent);
+  --border-strong: color-mix(in oklab, var(--plum) 35%, transparent);
+  --hairline-dark: color-mix(in oklab, var(--cream) 22%, transparent);
+
+  /* ----- Interactive ----- */
+  --accent:     var(--gold);
+  --brand:      var(--plum);
+  --focus-ring: color-mix(in oklab, var(--gold) 70%, transparent);
+  --whatsapp:   #25D366;
+
+  /* ----- Optical / weight defaults ----- */
+  --display-weight: 500;
+  --body-weight: 400;
+  --body-weight-medium: 500;
+  --body-weight-semibold: 600;
+
+  /* ----- Type scale (fluid, clamp-based) ----- */
+  --text-display: clamp(2.75rem, 6vw, 4.5rem);
+  --text-h1:      clamp(2.25rem, 4.5vw, 3.5rem);
+  --text-h2:      clamp(1.875rem, 3.4vw, 2.75rem);
+  --text-h3:      clamp(1.375rem, 2vw, 1.75rem);
+  --text-lead:    1.0625rem;
+  --text-base:    1rem;
+  --text-sm:      0.875rem;
+  --text-xs:      0.75rem;
+
+  /* ----- Line heights ----- */
+  --leading-display: 1.05;
+  --leading-heading: 1.12;
+  --leading-body:    1.7;
+  --leading-snug:    1.4;
+
+  /* ----- Tracking ----- */
+  --tracking-display: -0.02em;
+  --tracking-heading: -0.01em;
+  --tracking-eyebrow: 0.14em;
+  --tracking-body:    0;
+
+  /* ----- Spacing scale ----- */
+  --space-1: 0.25rem;  --space-2: 0.5rem;   --space-3: 0.75rem;
+  --space-4: 1rem;     --space-5: 1.25rem;  --space-6: 1.5rem;
+  --space-8: 2rem;     --space-10: 2.5rem;  --space-12: 3rem;
+  --space-16: 4rem;    --space-20: 5rem;    --space-24: 6rem;  --space-32: 8rem;
+
+  /* ----- Radii ----- */
+  --radius-sm: 8px;   --radius-md: 14px;  --radius-lg: 22px;
+  --radius-xl: 32px;  --radius-pill: 999px;  --radius-card: var(--radius-lg);
+
+  /* ----- Shadows (warm, plum-tinted) ----- */
+  --shadow-xs:  0 1px 2px color-mix(in oklab, var(--plum) 10%, transparent);
+  --shadow-sm:  0 4px 14px -8px color-mix(in oklab, var(--plum) 28%, transparent);
+  --shadow-md:  0 14px 36px -18px color-mix(in oklab, var(--plum) 36%, transparent);
+  --shadow-lg:  0 30px 60px -28px color-mix(in oklab, var(--plum) 42%, transparent);
+  --shadow-cta: 0 8px 24px -12px color-mix(in oklab, var(--plum) 70%, transparent);
+
+  /* ----- Layout ----- */
+  --container-max: 72rem;
+  --container-pad: 1.25rem;
+  --section-y: clamp(4rem, 9vw, 8rem);
+
+  /* ----- Motion ----- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: ease;
+  --dur-fast: 0.2s;
+  --dur-base: 0.4s;
+  --dur-reveal: 0.7s;
 }
 
 @theme {
-  --color-blush: var(--blush);
-  --color-plum:  var(--plum);
-  --color-cream: var(--cream);
-  --color-gold:  var(--gold);
-  --color-ink:   var(--ink);
-  --font-display: "Fraunces Variable", serif;
-  --font-body:    "Inter Variable", sans-serif;
+  --color-blush:  var(--blush);
+  --color-blush2: var(--blush-soft);
+  --color-plum:   var(--plum);
+  --color-cream:  var(--cream);
+  --color-cream2: var(--cream2);
+  --color-gold:   var(--gold);
+  --color-ink:    var(--ink);
+  --color-muted:  var(--text-muted);
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-body:    "Inter Variable", system-ui, -apple-system, sans-serif;
+  --font-mono:    "Space Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
-html { scroll-behavior: smooth; background: var(--cream); color: var(--ink); }
-body { font-family: var(--font-body); }
-img { max-width: 100%; }
+/* ============================================================
+   Base element defaults & shared utilities
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+  background: var(--surface-page);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  font-weight: var(--body-weight);
+}
+img { max-width: 100%; display: block; }
 picture { display: block; }
-h1,h2,h3 { font-family: var(--font-display); font-weight: 500; }
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  color: var(--text-heading);
+  margin: 0;
+}
+a { color: inherit; }
+::selection { background: var(--blush); color: var(--plum); }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
-/* Type scale */
-.h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; letter-spacing: -0.02em; }
-.h2 { font-size: clamp(2rem, 4vw, 3rem);   line-height: 1.1;  letter-spacing: -0.01em; }
-.lead { font-size: 1.0625rem; line-height: 1.7; }
+/* ----- Display type helpers ----- */
+.h-display { font-family: var(--font-display); font-size: var(--text-display); line-height: var(--leading-display); letter-spacing: var(--tracking-display); }
+.h1 { font-family: var(--font-display); font-size: var(--text-h1); line-height: var(--leading-heading); letter-spacing: var(--tracking-display); }
+.h2 { font-family: var(--font-display); font-size: var(--text-h2); line-height: var(--leading-heading); letter-spacing: var(--tracking-heading); }
+.h3 { font-family: var(--font-display); font-size: var(--text-h3); line-height: var(--leading-snug); }
+.lead { font-size: var(--text-lead); line-height: var(--leading-body); color: var(--text-muted); }
 
-/* Shared layout + UI utilities (used by the dedicated pages) */
-.container { max-width: 72rem; margin-inline: auto; padding-inline: 1.25rem; }
 .eyebrow {
-  font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--gold); font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-accent);
+  font-weight: 400;
 }
-.btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 500;
-  text-decoration: none; cursor: pointer;
-  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+
+/* Eyebrow with leading hairline rule */
+.eyebrow--rule { display: inline-flex; align-items: center; gap: 0.7em; }
+.eyebrow--rule::before { content: ""; width: 2rem; height: 1px; background: var(--gold); display: inline-block; flex: none; }
+
+/* Emphasized words inside display headings: italic, gold. Use <em>. */
+.h-display em, .h1 em, .h2 em, .h3 em, h1 em, h2 em, h3 em {
+  font-style: italic;
+  color: var(--gold);
+  font-weight: inherit;
 }
-.btn--primary {
-  background: var(--plum); color: var(--cream);
-  box-shadow: 0 8px 24px -12px color-mix(in oklab, var(--plum) 70%, transparent);
+
+/* ----- Layout ----- */
+.container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
 }
-.btn--primary:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--plum) 90%, black); }
-.btn--ghost {
-  background: transparent; color: var(--plum);
-  border: 1px solid color-mix(in oklab, var(--plum) 35%, transparent);
-}
-.btn--ghost:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--blush) 40%, transparent); }
 @media (min-width: 768px) { .container { padding-inline: 2rem; } }
 
-/* Scroll reveal (motion pass — Faza 7).
-   JS-gated: the hidden start state only applies when JS is present (html.js),
-   so no-JS users always see the content. motion.js adds .in-view on scroll. */
-.js [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
-.js [data-reveal].in-view { opacity: 1; transform: none; }
-.js [data-reveal-delay="1"] { transition-delay: .08s; }
-.js [data-reveal-delay="2"] { transition-delay: .16s; }
-.js [data-reveal-delay="3"] { transition-delay: .24s; }
+/* ----- Buttons (canonical brand pill) ----- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--body-weight-medium);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-soft),
+              background var(--dur-fast) var(--ease-soft),
+              box-shadow var(--dur-fast) var(--ease-soft);
+}
+.btn--primary { background: var(--plum); color: var(--cream); box-shadow: var(--shadow-cta); }
+.btn--primary:hover { transform: translateY(-2px); background: var(--plum-700); }
+.btn--ghost { background: transparent; color: var(--plum); border: 1px solid var(--border-strong); }
+.btn--ghost:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--blush) 40%, transparent); }
+.btn--gold { background: var(--gold); color: var(--plum); box-shadow: 0 8px 24px -12px color-mix(in oklab, var(--gold) 70%, transparent); }
+.btn--gold:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--gold) 90%, black); }
+.btn--lg { padding: 1rem 2.1rem; font-size: var(--text-lead); }
+.btn--sm { padding: 0.55rem 1.1rem; font-size: var(--text-sm); }
 
-/* Hero ambient gradient — slow, subtle, warm */
-@property --hero-a {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
+/* ----- Scroll reveal (JS-gated; content always visible without .js) -----
+   Premium "focus-in": content rises, fades, and sharpens from a soft blur. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(7px);
+  transition: opacity var(--dur-reveal) var(--ease-out),
+              transform var(--dur-reveal) var(--ease-out),
+              filter var(--dur-reveal) var(--ease-out);
+  will-change: opacity, transform, filter;
 }
-.hero-glow {
-  background:
-    radial-gradient(60% 60% at 70% 30%, color-mix(in oklab, var(--blush) 70%, transparent), transparent 70%),
-    conic-gradient(from var(--hero-a) at 30% 40%, var(--cream), var(--blush) 35%, var(--gold) 55%, var(--cream) 80%);
-  animation: hero-drift 24s ease-in-out infinite alternate;
-}
-@keyframes hero-drift {
-  to { --hero-a: 120deg; }
-}
+.js [data-reveal].in-view { opacity: 1; transform: none; filter: none; }
+.js [data-reveal-delay="1"] { transition-delay: 0.08s; }
+.js [data-reveal-delay="2"] { transition-delay: 0.16s; }
+.js [data-reveal-delay="3"] { transition-delay: 0.24s; }
+.js [data-reveal-delay="4"] { transition-delay: 0.32s; }
+
+/* Image settle: framed photo eases from a gentle over-scale as it enters. */
+.js [data-reveal].reveal-img img,
+.js [data-reveal] .reveal-img img { transform: scale(1.08); transition: transform 1.3s var(--ease-out); will-change: transform; }
+.js [data-reveal].in-view.reveal-img img,
+.js [data-reveal].in-view .reveal-img img { transform: scale(1); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  /* reveal never runs for these users — keep all content fully visible */
-  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; }
+  [data-reveal] img, .reveal-img img { transform: none !important; }
 }
