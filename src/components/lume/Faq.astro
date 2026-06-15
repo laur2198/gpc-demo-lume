@@ -1,0 +1,65 @@
+---
+const FAQ = [
+  { q: 'Cât durează o ședință?', a: 'Între 90 și 120 de minute, în funcție de serviciu.' },
+  { q: 'Cât rezistă extensiile?', a: '3–4 săptămâni, cu retuș recomandat la 3 săptămâni.' },
+  { q: 'Sunt sigure pentru genele naturale?', a: 'Da, aplicate corect, fir cu fir, fără să afecteze genele tale.' },
+  { q: 'Vin machiată la programare?', a: 'Te rugăm fără machiaj în zona ochilor, pentru aderență optimă.' },
+];
+---
+<section class="lume-faq">
+  <div class="container">
+    <div class="lume-faq-head" data-reveal>
+      <span class="eyebrow lume-eyebrow-rule"><span class="rule" aria-hidden="true"></span>Întrebări frecvente</span>
+      <h2 class="h2">Bine de știut înainte de vizită.</h2>
+    </div>
+    <div class="lume-acc" data-reveal data-reveal-delay="1">
+      {FAQ.map((it, i) => (
+        <details open={i === 0}>
+          <summary>
+            {it.q}
+            <span class="lume-acc-mark" aria-hidden="true">+</span>
+          </summary>
+          <p>{it.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lume-faq { background: var(--surface-alt); padding-block: var(--section-y); }
+  .lume-faq .container { max-width: 48rem; }
+  .lume-faq-head { display: flex; flex-direction: column; gap: var(--space-4); margin-bottom: var(--space-10); }
+  .lume-eyebrow-rule { display: inline-flex; align-items: center; gap: 0.7em; }
+  .lume-eyebrow-rule .rule { width: 2rem; height: 1px; background: var(--gold); display: inline-block; }
+
+  .lume-acc { display: flex; flex-direction: column; gap: var(--space-3); }
+  .lume-acc details {
+    background: var(--surface-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-soft);
+    padding: var(--space-5) var(--space-6);
+  }
+  .lume-acc summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    color: var(--text-heading);
+  }
+  .lume-acc summary::-webkit-details-marker { display: none; }
+  .lume-acc-mark {
+    color: var(--gold);
+    font-size: 1.4em;
+    line-height: 1;
+    flex: none;
+    display: inline-block;
+    transition: transform var(--dur-fast) var(--ease-soft);
+  }
+  .lume-acc details[open] .lume-acc-mark { transform: rotate(45deg); }
+  .lume-acc p { margin: var(--space-3) 0 0; color: var(--text-muted); line-height: var(--leading-body); }
+</style>

@@ -1,0 +1,73 @@
+---
+// Sticky site header with wordmark, anchor nav and booking CTA.
+const links = [
+  ['#servicii', 'Servicii'],
+  ['#rezultate', 'Rezultate'],
+  ['#pachete', 'Pachete'],
+  ['#contact', 'Contact'],
+];
+---
+<header class="lume-header">
+  <div class="container lume-header-row">
+    <a href="#top" class="lume-word">LUM<span>É</span></a>
+    <nav class="lume-nav">
+      <ul class="lume-nav-links">
+        {links.map(([href, label]) => (
+          <li><a href={href}>{label}</a></li>
+        ))}
+      </ul>
+      <button type="button" class="btn btn--primary btn--sm" data-book>Rezervă</button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .lume-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in oklab, var(--cream) 82%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-soft);
+    transition: background var(--dur-base) var(--ease-soft), box-shadow var(--dur-base) var(--ease-soft);
+  }
+  .lume-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4.5rem;
+    transition: height var(--dur-base) var(--ease-out);
+  }
+  .lume-word {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.6rem;
+    letter-spacing: 0.02em;
+    color: var(--plum);
+    text-decoration: none;
+  }
+  .lume-word span { color: var(--gold); }
+  .lume-nav { display: flex; align-items: center; gap: var(--space-8); }
+  .lume-nav-links {
+    display: flex;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .lume-nav-links a {
+    text-decoration: none;
+    color: var(--text-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  :global(:root[data-lume-scrolled="1"]) .lume-header {
+    background: color-mix(in oklab, var(--cream) 94%, transparent);
+    box-shadow: var(--shadow-sm);
+  }
+  :global(:root[data-lume-scrolled="1"]) .lume-header-row { height: 3.75rem; }
+
+  @media (max-width: 640px) { .lume-nav-links { display: none; } }
+</style>

@@ -1,0 +1,42 @@
+---
+// Testimonial — single large editorial quote, airy, centered, on warm cream.
+---
+<section class="lume-testi">
+  <div class="container">
+    <div data-reveal>
+      <span class="eyebrow">Ce spun clientele</span>
+    </div>
+    <figure class="lume-testi-fig" data-reveal data-reveal-delay="1">
+      <span class="lume-testi-mark" aria-hidden="true">“</span>
+      <blockquote class="lume-testi-quote">Cel mai bun lash artist din oraș. Gene impecabile, ședință relaxantă de fiecare dată.</blockquote>
+      <figcaption class="lume-testi-cap"><strong>Andreea M.</strong> · clientă din 2023</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .lume-testi { background: var(--surface-page); padding-block: var(--section-y); }
+  .lume-testi .container { max-width: 46rem; margin-inline: auto; text-align: center; }
+  .lume-testi-fig { margin: var(--space-8) 0 0; }
+  .lume-testi-mark {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    line-height: 0.2;
+    color: var(--gold);
+    margin-bottom: var(--space-5);
+  }
+  .lume-testi-quote {
+    margin: 0 auto;
+    max-width: 24ch;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    color: var(--text-heading);
+    text-wrap: balance;
+  }
+  .lume-testi-cap { margin-top: var(--space-6); font-size: var(--text-base); color: var(--text-muted); }
+  .lume-testi-cap strong { color: var(--plum); font-weight: 600; }
+</style>

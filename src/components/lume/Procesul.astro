@@ -1,0 +1,62 @@
+---
+const STEPS = [
+  { n: '01', title: 'Consultație', desc: 'Discutăm despre ce-ți dorești, forma ochiului și starea genelor sau a tenului. Alegem împreună stilul potrivit.' },
+  { n: '02', title: 'Pregătire', desc: 'Curățăm și pregătim zona, izolăm și protejăm. Te așezi confortabil — multe cliente adorm.' },
+  { n: '03', title: 'Aplicare', desc: 'Lucrăm fir cu fir, cu răbdare și precizie, 90–120 de minute. Fără grabă, fără compromisuri.' },
+  { n: '04', title: 'Îngrijire post', desc: 'Îți explicăm cum păstrezi rezultatul acasă și programăm retușul la momentul potrivit.' },
+];
+---
+<section class="lume-proces">
+  <div class="container">
+    <div class="lume-proces-head" data-reveal>
+      <span class="eyebrow">Cum decurge</span>
+      <h2 class="h2">Un proces <em>blând,</em> de la început la final.</h2>
+    </div>
+    <ol class="lume-steps">
+      {STEPS.map((s, i) => (
+        <li data-reveal data-reveal-delay={String((i % 3) + 1)}>
+          <span class="lume-step-n">{s.n}</span>
+          <h3 class="lume-step-title">{s.title}</h3>
+          <p class="lume-step-desc">{s.desc}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .lume-proces { padding-block: var(--section-y); }
+  .lume-proces-head { margin-bottom: var(--space-16); max-width: 44ch; }
+  .lume-proces-head .h2 { margin-top: var(--space-4); }
+  .lume-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-8);
+  }
+  .lume-steps li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border-strong);
+  }
+  .lume-step-n {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+  .lume-step-title {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    margin: 0;
+    color: var(--text-heading);
+  }
+  .lume-step-desc { margin: 0; color: var(--text-muted); line-height: var(--leading-body); }
+
+  @media (max-width: 900px) { .lume-steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .lume-steps { grid-template-columns: 1fr; } }
+</style>

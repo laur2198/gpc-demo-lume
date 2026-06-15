@@ -1,0 +1,62 @@
+---
+import Img from '../Img.astro';
+
+const CERTS = ['Lash artist certificat', 'Brow stylist', 'Igienă & sterilizare', '+8 ani experiență'];
+---
+<section id="artist" class="lume-artist-sec">
+  <div class="container lume-artist">
+    <div class="lume-artist-img reveal-img" data-reveal>
+      <Img name="editorial" alt="Ioana, lash artist și fondatoarea LUMÉ Studio" ratio="4 / 5" sizes="(min-width: 860px) 40vw, 80vw" widths={[360, 520, 720]} />
+    </div>
+    <div class="lume-artist-txt" data-reveal data-reveal-delay="1">
+      <span class="eyebrow">Cine te îngrijește</span>
+      <h2 class="h2">Ioana, <em>mâinile</em> din spatele LUMÉ.</h2>
+      <p class="lume-artist-p">Am deschis LUMÉ pentru a face lucrurile altfel: o singură clientă pe rând, timp suficient și o tehnică în care am încredere. Fiecare set de gene și fiecare tratament îl tratez ca pe o lucrare de detaliu — pentru că asta și este.</p>
+      <p class="lume-artist-p">Mă perfecționez constant și aleg doar produse premium, hipoalergenice, sigure pentru ochi sensibili.</p>
+      <div class="lume-artist-certs">
+        {CERTS.map((c) => <span class="lume-pill">{c}</span>)}
+      </div>
+      <div class="lume-artist-cta">
+        <button type="button" class="btn btn--primary" data-book>Programează-te cu Ioana</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lume-artist-sec { padding-block: var(--section-y); }
+  .lume-artist {
+    display: grid;
+    grid-template-columns: 0.85fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .lume-artist-img {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 4 / 5;
+  }
+  .lume-artist-img :global(picture) { display: block; width: 100%; height: 100%; }
+  .lume-artist-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .lume-artist-txt { display: flex; flex-direction: column; gap: var(--space-5); max-width: 44ch; }
+  .lume-artist-p { margin: 0; color: var(--text-muted); line-height: var(--leading-body); }
+  .lume-artist-certs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: var(--space-2); }
+  .lume-pill {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--plum);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 0.85rem;
+  }
+  .lume-artist-cta { margin-top: var(--space-3); }
+
+  @media (max-width: 860px) {
+    .lume-artist { grid-template-columns: 1fr; }
+    .lume-artist-img { max-width: 26rem; }
+  }
+</style>
