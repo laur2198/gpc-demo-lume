@@ -1,23 +1,34 @@
 @import "tailwindcss";
 @import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/fraunces/standard-italic.css";
 @import "@fontsource-variable/inter";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
 
+/* Warm-light editorial tokens (din plan-lume-redesign) */
 :root {
-  --blush: #E8D5CE;
-  --plum:  #4A2C3A;
-  --cream: #FAF6F2;
-  --gold:  #C9A77C;
-  --ink:   #2B2422;
+  --blush:  #E8D5CE;
+  --blush2: #F0E2DB;
+  --plum:   #4A2C3A;
+  --cream:  #FAF6F2;
+  --cream2: #F3E9E2;
+  --gold:   #C9A77C;
+  --ink:    #2B2422;
+  --muted:  #9B8A82;
 }
 
 @theme {
-  --color-blush: var(--blush);
-  --color-plum:  var(--plum);
-  --color-cream: var(--cream);
-  --color-gold:  var(--gold);
-  --color-ink:   var(--ink);
+  --color-blush:  var(--blush);
+  --color-blush2: var(--blush2);
+  --color-plum:   var(--plum);
+  --color-cream:  var(--cream);
+  --color-cream2: var(--cream2);
+  --color-gold:   var(--gold);
+  --color-ink:    var(--ink);
+  --color-muted:  var(--muted);
   --font-display: "Fraunces Variable", serif;
   --font-body:    "Inter Variable", sans-serif;
+  --font-mono:    "Space Mono", monospace;
 }
 
 html { scroll-behavior: smooth; background: var(--cream); color: var(--ink); }
@@ -34,8 +45,9 @@ h1,h2,h3 { font-family: var(--font-display); font-weight: 500; }
 /* Shared layout + UI utilities (used by the dedicated pages) */
 .container { max-width: 72rem; margin-inline: auto; padding-inline: 1.25rem; }
 .eyebrow {
-  font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--gold); font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: clamp(0.64rem, 1.2vw, 0.74rem); letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--gold); font-weight: 400;
 }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -55,11 +67,10 @@ h1,h2,h3 { font-family: var(--font-display); font-weight: 500; }
 .btn--ghost:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--blush) 40%, transparent); }
 @media (min-width: 768px) { .container { padding-inline: 2rem; } }
 
-/* Scroll reveal (motion pass — Faza 7).
-   JS-gated: the hidden start state only applies when JS is present (html.js),
-   so no-JS users always see the content. motion.js adds .in-view on scroll. */
+/* Scroll reveal — reveal.js adds .in when elements enter the viewport.
+   JS-gated (html.js): no-JS users always see the content. */
 .js [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
-.js [data-reveal].in-view { opacity: 1; transform: none; }
+.js [data-reveal].in { opacity: 1; transform: none; }
 .js [data-reveal-delay="1"] { transition-delay: .08s; }
 .js [data-reveal-delay="2"] { transition-delay: .16s; }
 .js [data-reveal-delay="3"] { transition-delay: .24s; }
