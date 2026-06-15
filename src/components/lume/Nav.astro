@@ -1,23 +1,30 @@
 ---
-// Sticky site header with wordmark, anchor nav and booking CTA.
+// Sticky site header — wordmark, real page nav, mobile disclosure, booking CTA.
+// Shared across all pages; persisted across View Transitions.
 const links = [
-  ['#servicii', 'Servicii'],
-  ['#rezultate', 'Rezultate'],
-  ['#pachete', 'Pachete'],
-  ['#contact', 'Contact'],
+  ['/servicii/', 'Servicii'],
+  ['/preturi/', 'Prețuri'],
+  ['/contact/', 'Contact'],
 ];
 ---
-<header class="lume-header">
+<header class="lume-header" transition:persist>
   <div class="container lume-header-row">
-    <a href="#top" class="lume-word">LUM<span>É</span></a>
-    <nav class="lume-nav">
+    <a href="/" class="lume-word" aria-label="LUMÉ Studio — acasă">LUM<span>É</span></a>
+
+    <nav class="lume-nav" aria-label="Navigare principală">
       <ul class="lume-nav-links">
-        {links.map(([href, label]) => (
-          <li><a href={href}>{label}</a></li>
-        ))}
+        {links.map(([href, label]) => <li><a href={href}>{label}</a></li>)}
       </ul>
-      <button type="button" class="btn btn--primary btn--sm" data-book>Rezervă</button>
+      <button type="button" class="btn btn--primary btn--sm lume-nav-cta" data-book>Rezervă</button>
     </nav>
+
+    <details class="lume-mobile">
+      <summary aria-label="Deschide meniul"><span class="lume-burger" aria-hidden="true"></span></summary>
+      <nav class="lume-mobile-panel" aria-label="Navigare">
+        {links.map(([href, label]) => <a href={href}>{label}</a>)}
+        <button type="button" class="btn btn--primary lume-mobile-cta" data-book>Rezervă</button>
+      </nav>
+    </details>
   </div>
 </header>
 
@@ -61,7 +68,9 @@ const links = [
     color: var(--text-body);
     font-size: var(--text-sm);
     font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-soft);
   }
+  .lume-nav-links a:hover { color: var(--plum); }
 
   :global(:root[data-lume-scrolled="1"]) .lume-header {
     background: color-mix(in oklab, var(--cream) 94%, transparent);
@@ -69,5 +78,41 @@ const links = [
   }
   :global(:root[data-lume-scrolled="1"]) .lume-header-row { height: 3.75rem; }
 
-  @media (max-width: 640px) { .lume-nav-links { display: none; } }
+  /* Mobile disclosure */
+  .lume-mobile { display: none; position: relative; }
+  .lume-mobile summary {
+    list-style: none; cursor: pointer; width: 2.75rem; height: 2.75rem;
+    display: grid; place-items: center; border-radius: 0.6rem;
+  }
+  .lume-mobile summary::-webkit-details-marker { display: none; }
+  .lume-burger, .lume-burger::before, .lume-burger::after {
+    content: ""; display: block; width: 1.3rem; height: 2px;
+    background: var(--plum); border-radius: 2px; position: relative;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  .lume-burger::before { position: absolute; top: -6px; }
+  .lume-burger::after { position: absolute; top: 6px; }
+  .lume-mobile[open] .lume-burger { background: transparent; }
+  .lume-mobile[open] .lume-burger::before { transform: translateY(6px) rotate(45deg); }
+  .lume-mobile[open] .lume-burger::after { transform: translateY(-6px) rotate(-45deg); }
+  .lume-mobile-panel {
+    position: absolute; right: 0; top: calc(100% + 0.6rem);
+    display: flex; flex-direction: column; gap: 0.25rem;
+    min-width: 13rem; padding: 0.6rem;
+    background: var(--cream);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+  .lume-mobile-panel a {
+    padding: 0.7rem 0.8rem; border-radius: 0.5rem;
+    text-decoration: none; color: var(--text-body); font-weight: 500;
+  }
+  .lume-mobile-panel a:hover { background: color-mix(in oklab, var(--blush) 35%, transparent); }
+  .lume-mobile-cta { margin-top: 0.4rem; width: 100%; }
+
+  @media (max-width: 760px) {
+    .lume-nav-links, .lume-nav-cta { display: none; }
+    .lume-mobile { display: block; }
+  }
 </style>

@@ -1,10 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import ConceptBanner from '../components/ConceptBanner.astro';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
-import PageHeader from '../components/PageHeader.astro';
-import BookingBand from '../components/BookingBand.astro';
+import ConceptBanner from '../components/lume/ConceptBanner.astro';
+import Nav from '../components/lume/Nav.astro';
+import Footer from '../components/lume/Footer.astro';
+import BookingModal from '../components/lume/BookingModal.astro';
+import PageHeader from '../components/lume/PageHeader.astro';
+import CtaBand from '../components/lume/CtaBand.astro';
 import { plans } from '../data/pricing';
 import { services } from '../data/services';
 ---
@@ -18,111 +19,130 @@ import { services } from '../data/services';
     <PageHeader
       eyebrow="Prețuri"
       title="Tarife clare, fără surprize."
+      accent="fără surprize"
       subtitle="Prețurile pornesc de la valorile de mai jos și se confirmă în funcție de serviciul ales și de starea genelor, sprâncenelor sau tenului tău."
     />
 
-    <section class="section">
+    <!-- Packages -->
+    <section class="lume-sec">
       <div class="container">
-        <h2 class="h2 block-title" data-reveal>Pachete</h2>
-        <div class="plans">
-          {plans.map((p, i) => (
-            <article class:list={["plan", p.featured && "plan--featured"]} data-reveal data-reveal-delay={i + 1}>
-              {p.featured && <span class="plan__badge">{p.note}</span>}
-              <h3 class="plan__name">{p.name}</h3>
-              <p class="plan__price">de la <strong>{p.price}</strong></p>
-              <p class="plan__detail">{p.detail}</p>
-              {!p.featured && <p class="plan__note">„{p.note}”</p>}
-              <a href="/contact/" class="btn btn--primary plan__cta">Rezervă</a>
-            </article>
+        <div class="lume-sec-head lume-sec-head--center" data-reveal>
+          <span class="eyebrow eyebrow--rule">Pachete</span>
+          <h2 class="h2">Alege experiența <em>potrivită</em>.</h2>
+        </div>
+        <div class="lume-price-grid">
+          {plans.map((p) => (
+            <div data-reveal>
+              <div class:list={['lume-price-card', p.featured && 'is-featured']}>
+                <div class="lume-price-top">
+                  <span class="lume-price-name">{p.name}</span>
+                  {p.featured && <span class="lume-badge-featured">{p.note}</span>}
+                </div>
+                <div class="lume-price-amount-row">
+                  <span class="lume-price-from">de la</span>
+                  <span class="lume-price-amount">{p.price}</span>
+                </div>
+                <p class="lume-price-detail">{p.detail}</p>
+                {!p.featured && p.note && <p class="lume-price-note">„{p.note}”</p>}
+                <div class="lume-price-foot">
+                  <button type="button" class:list={['btn', p.featured ? 'btn--gold' : 'btn--ghost', 'lume-price-btn']} data-book>Rezervă</button>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </section>
 
-    <section class="section section--alt">
+    <!-- Per-service tariffs -->
+    <section class="lume-sec lume-sec--alt">
       <div class="container">
-        <h2 class="h2 block-title" data-reveal>Tarife pe serviciu</h2>
-        <div class="tables">
+        <div class="lume-sec-head" data-reveal>
+          <span class="eyebrow eyebrow--rule">Pe serviciu</span>
+          <h2 class="h2">Tarife <em>detaliate</em>.</h2>
+        </div>
+        <div class="lume-tables">
           {services.map((s) => (
-            <div class="ptable" data-reveal>
-              <div class="ptable__head">
-                <h3 class="ptable__title">{s.title}</h3>
-                <a class="ptable__link" href={`/servicii/${s.slug}/`}>detalii →</a>
+            <div class="lume-ptable" data-reveal>
+              <div class="lume-ptable-head">
+                <h3 class="lume-ptable-title">{s.title}</h3>
+                <a class="lume-ptable-link" href={`/servicii/${s.slug}/`}>detalii →</a>
               </div>
-              <ul class="ptable__rows">
+              <ul class="lume-prows">
                 {s.types.map((t) => (
-                  <li class="prow">
-                    <span class="prow__name">{t.name}</span>
-                    <span class="prow__dur">{t.duration}</span>
-                    <span class="prow__price">de la {t.priceFrom} lei</span>
+                  <li class="lume-prow">
+                    <span class="lume-prow-name">{t.name}</span>
+                    <span class="lume-prow-dur">{t.duration}</span>
+                    <span class="lume-prow-price">de la {t.priceFrom} lei</span>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <p class="note" data-reveal>Tarifele sunt orientative pentru un demo concept. Prețul final se confirmă la programare.</p>
+        <p class="lume-note" data-reveal>Tarifele sunt orientative pentru un demo concept. Prețul final se confirmă la programare.</p>
       </div>
     </section>
 
-    <BookingBand title="Nu ești sigură ce ți se potrivește?" text="Scrie-ne și îți recomandăm pachetul potrivit." />
+    <CtaBand title="Nu ești sigură ce ți se potrivește?" text="Scrie-ne și îți recomandăm pachetul potrivit." />
   </main>
   <Footer />
+  <BookingModal />
 </Base>
 
 <style>
-  .section { padding-block: 3.5rem; }
-  .section--alt { background: color-mix(in oklab, var(--blush) 26%, var(--cream)); }
-  .block-title { color: var(--plum); margin-bottom: 1.75rem; }
+  .lume-sec { padding-block: var(--section-y); }
+  .lume-sec--alt { background: var(--surface-alt); }
+  .lume-sec-head { margin-bottom: var(--space-10); max-width: 44ch; display: flex; flex-direction: column; gap: var(--space-4); }
+  .lume-sec-head--center { align-items: center; text-align: center; margin-inline: auto; margin-bottom: var(--space-12); }
 
-  .plans { display: grid; gap: 1.5rem; }
-  .plan {
-    position: relative; display: flex; flex-direction: column;
-    background: color-mix(in oklab, var(--cream) 92%, white);
-    border: 1px solid color-mix(in oklab, var(--plum) 10%, transparent);
-    border-radius: 1.25rem; padding: 2rem 1.6rem;
-    transition: transform .25s ease, box-shadow .25s ease;
+  /* Packages (same language as homepage Pricing) */
+  .lume-price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); align-items: center; }
+  .lume-price-card {
+    background: var(--surface-card); color: var(--text-body);
+    border-radius: var(--radius-card); padding: var(--space-8); box-shadow: var(--shadow-md);
+    display: flex; flex-direction: column; gap: var(--space-4); position: relative;
   }
-  .plan:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--plum) 60%, transparent); }
-  .plan--featured { border-color: var(--gold); background: color-mix(in oklab, var(--blush) 30%, var(--cream)); }
-  .plan__badge {
-    position: absolute; top: -0.8rem; left: 50%; transform: translateX(-50%);
-    background: var(--gold); color: var(--plum); font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.85rem;
-    border-radius: 999px; white-space: nowrap;
+  .lume-price-card.is-featured { background: var(--surface-inverse); color: var(--text-on-dark); box-shadow: var(--shadow-lg); transform: translateY(-10px); }
+  .lume-price-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .lume-price-name { font-family: var(--font-display); font-size: var(--text-h3); color: var(--text-heading); }
+  .is-featured .lume-price-name { color: var(--cream); }
+  .lume-badge-featured {
+    display: inline-flex; align-items: center; gap: 0.4em; font-size: var(--text-xs); font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 0.4em 0.85em; border-radius: var(--radius-pill);
+    line-height: 1; background: var(--gold); color: var(--plum);
   }
-  .plan__name { color: var(--plum); font-size: 1.5rem; }
-  .plan__price { margin-top: 0.6rem; font-size: 1.05rem; }
-  .plan__price strong { font-family: var(--font-display); font-size: 1.6rem; color: var(--plum); }
-  .plan__detail { margin-top: 0.75rem; line-height: 1.6; }
-  .plan__note { margin-top: 0.5rem; font-style: italic; color: color-mix(in oklab, var(--ink) 65%, transparent); }
-  .plan__cta { margin-top: auto; align-self: flex-start; }
-  .plan--featured .plan__cta { margin-top: 1.5rem; }
+  .lume-price-amount-row { display: flex; align-items: baseline; gap: 0.4em; }
+  .lume-price-from { font-size: var(--text-xs); color: var(--text-muted); }
+  .is-featured .lume-price-from { color: var(--text-on-dark-muted); }
+  .lume-price-amount { font-family: var(--font-display); font-size: var(--text-h1); line-height: 1; color: var(--text-heading); }
+  .is-featured .lume-price-amount { color: var(--gold); }
+  .lume-price-detail { margin: 0; color: var(--text-muted); line-height: var(--leading-body); }
+  .is-featured .lume-price-detail { color: var(--text-on-dark-muted); }
+  .lume-price-note { margin: 0; font-style: italic; color: var(--text-muted); }
+  .lume-price-foot { margin-top: auto; padding-top: var(--space-4); }
+  .lume-price-btn { width: 100%; }
 
-  .tables { display: grid; gap: 1.5rem; }
-  .ptable {
-    background: color-mix(in oklab, var(--cream) 94%, white);
-    border: 1px solid color-mix(in oklab, var(--plum) 10%, transparent);
-    border-radius: 1rem; padding: 1.4rem 1.5rem;
-  }
-  .ptable__head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; }
-  .ptable__title { color: var(--plum); font-size: 1.25rem; }
-  .ptable__link { color: var(--gold); font-weight: 600; font-size: 0.85rem; text-decoration: none; }
-  .ptable__link:hover { text-decoration: underline; }
-  .ptable__rows { list-style: none; }
-  .prow {
+  /* Tariff tables */
+  .lume-tables { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+  .lume-ptable { background: var(--surface-card); border: 1px solid var(--border-soft); border-radius: var(--radius-card); padding: var(--space-6); box-shadow: var(--shadow-sm); }
+  .lume-ptable-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-3); gap: var(--space-3); }
+  .lume-ptable-title { font-family: var(--font-display); font-size: var(--text-h3); color: var(--text-heading); margin: 0; }
+  .lume-ptable-link { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--gold); text-decoration: none; white-space: nowrap; }
+  .lume-ptable-link:hover { text-decoration: underline; }
+  .lume-prows { list-style: none; margin: 0; padding: 0; }
+  .lume-prow {
     display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 1rem; align-items: baseline;
-    padding: 0.75rem 0; border-bottom: 1px solid color-mix(in oklab, var(--plum) 8%, transparent);
+    padding: 0.8rem 0; border-bottom: 1px solid var(--border-soft);
   }
-  .prow:last-child { border-bottom: 0; }
-  .prow__name { font-weight: 600; color: var(--ink); }
-  .prow__dur { grid-row: 2; font-size: 0.85rem; color: color-mix(in oklab, var(--ink) 60%, transparent); }
-  .prow__price { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--gold); font-weight: 600; white-space: nowrap; }
-  .note { margin-top: 1.5rem; font-size: 0.85rem; color: color-mix(in oklab, var(--ink) 60%, transparent); }
+  .lume-prow:last-child { border-bottom: 0; }
+  .lume-prow-name { font-weight: 600; color: var(--text-body); }
+  .lume-prow-dur { grid-row: 2; font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+  .lume-prow-price { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--gold); font-weight: 600; white-space: nowrap; }
+  .lume-note { margin-top: var(--space-6); font-size: var(--text-sm); color: var(--text-muted); }
 
-  @media (min-width: 768px) {
-    .section { padding-block: 4.5rem; }
-    .plans { grid-template-columns: repeat(3, 1fr); align-items: start; }
-    .tables { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 820px) {
+    .lume-price-grid { grid-template-columns: 1fr; }
+    .lume-tables { grid-template-columns: 1fr; }
   }
 </style>

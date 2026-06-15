@@ -1,10 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
-import ConceptBanner from '../../components/ConceptBanner.astro';
-import Nav from '../../components/Nav.astro';
-import Footer from '../../components/Footer.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import BookingBand from '../../components/BookingBand.astro';
+import ConceptBanner from '../../components/lume/ConceptBanner.astro';
+import Nav from '../../components/lume/Nav.astro';
+import Footer from '../../components/lume/Footer.astro';
+import BookingModal from '../../components/lume/BookingModal.astro';
+import CtaBand from '../../components/lume/CtaBand.astro';
 import Img from '../../components/Img.astro';
 import { services } from '../../data/services';
 
@@ -14,82 +14,118 @@ export function getStaticPaths() {
 
 const { service } = Astro.props;
 const others = services.filter((s) => s.slug !== service.slug);
+
+// italic-gold accent word per service title
+const ACCENT: Record<string, string> = {
+  'extensii-gene': 'gene',
+  sprancene: 'Sprâncene',
+  'ingrijire-ten': 'ten',
+};
+const accent = ACCENT[service.slug] ?? '';
+let tBefore = service.title, tEm = '', tAfter = '';
+if (accent && service.title.includes(accent)) {
+  const i = service.title.indexOf(accent);
+  tBefore = service.title.slice(0, i);
+  tEm = accent;
+  tAfter = service.title.slice(i + accent.length);
+}
 ---
-<Base
-  title={`${service.title} — LUMÉ Studio`}
-  description={service.short}
->
+<Base title={`${service.title} — LUMÉ Studio`} description={service.short}>
   <ConceptBanner />
   <Nav />
   <main>
-    <PageHeader eyebrow="Serviciu" title={service.title} subtitle={service.intro}>
-      <div class="ph-meta">
-        <span>de la <strong>{service.priceFrom} lei</strong></span>
-        <span>·</span>
-        <span>{service.duration}</span>
-      </div>
-      <div class="ph-actions">
-        <a class="btn btn--primary" href="/contact/">Rezervă o programare</a>
-        <a class="btn btn--ghost" href="/preturi/">Vezi toate prețurile</a>
-      </div>
-    </PageHeader>
-
-    <section class="section">
-      <div class="container detail">
-        <div class="detail__media" data-reveal>
-          <Img name={service.img} ratio="4 / 3" alt={service.alt} sizes="(min-width: 900px) 40vw, 100vw" widths={[400, 600, 800]} class="detail__img" />
+    <!-- Short warm-light hero -->
+    <section class="lume-shero">
+      <div class="container lume-shero-grid">
+        <div class="lume-shero-copy" data-reveal>
+          <span class="eyebrow eyebrow--rule">Serviciu</span>
+          <h1 class="h1 lume-shero-title">{tBefore}{tEm && <em>{tEm}</em>}{tAfter}</h1>
+          <p class="lead lume-shero-sub">{service.intro}</p>
+          <div class="lume-shero-meta">
+            <span class="eyebrow lume-shero-from">de la</span>
+            <span class="lume-shero-amount">{service.priceFrom} lei</span>
+            <span class="lume-shero-dur">· {service.duration}</span>
+          </div>
+          <div class="lume-shero-actions">
+            <button type="button" class="btn btn--primary btn--lg" data-book>Rezervă o programare</button>
+            <a class="btn btn--ghost btn--lg" href="/preturi/">Vezi toate prețurile</a>
+          </div>
         </div>
-        <div class="detail__benefits" data-reveal data-reveal-delay="1">
-          <h2 class="h2 block-title">De ce LUMÉ</h2>
-          <ul class="benefits">
-            {service.benefits.map((b) => <li>{b}</li>)}
-          </ul>
+        <div class="lume-shero-media reveal-img" data-reveal data-reveal-delay="1">
+          <Img name={service.img} alt={service.alt} ratio="4 / 5" sizes="(min-width: 900px) 42vw, 100vw" widths={[420, 600, 820]} />
         </div>
       </div>
     </section>
 
-    <section class="section section--alt">
+    <!-- Benefits -->
+    <section class="lume-sec lume-sec--alt">
+      <div class="container lume-benefits-grid">
+        <div data-reveal>
+          <span class="eyebrow eyebrow--rule">De ce LUMÉ</span>
+          <h2 class="h2 lume-sec-title">Detaliul pe care îl <em>simți</em>.</h2>
+        </div>
+        <ul class="lume-benefits" data-reveal data-reveal-delay="1">
+          {service.benefits.map((b) => <li>{b}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Options & pricing -->
+    <section class="lume-sec">
       <div class="container">
-        <h2 class="h2 block-title" data-reveal>Opțiuni & tarife</h2>
-        <div class="types">
+        <div class="lume-sec-head" data-reveal>
+          <span class="eyebrow eyebrow--rule">Opțiuni & tarife</span>
+          <h2 class="h2 lume-sec-title">Alege varianta <em>potrivită</em>.</h2>
+        </div>
+        <div class="lume-types">
           {service.types.map((t, i) => (
-            <div class="type" data-reveal data-reveal-delay={(i % 3) + 1}>
-              <div class="type__head">
-                <h3 class="type__name">{t.name}</h3>
-                <span class="type__price">de la {t.priceFrom} lei</span>
+            <div class="lume-type" data-reveal data-reveal-delay={(i % 3) + 1}>
+              <div class="lume-type-head">
+                <h3 class="lume-type-name">{t.name}</h3>
+                <span class="lume-type-price">de la {t.priceFrom} lei</span>
               </div>
-              <p class="type__desc">{t.desc}</p>
-              <span class="type__dur">{t.duration}</span>
+              <p class="lume-type-desc">{t.desc}</p>
+              <span class="lume-type-dur">{t.duration}</span>
             </div>
           ))}
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container faq-wrap">
-        <h2 class="h2 block-title" data-reveal>Întrebări frecvente</h2>
-        <div class="faq">
+    <!-- FAQ -->
+    <section class="lume-sec lume-sec--alt">
+      <div class="container lume-faqwrap">
+        <div class="lume-sec-head" data-reveal>
+          <span class="eyebrow eyebrow--rule">Întrebări frecvente</span>
+          <h2 class="h2 lume-sec-title">Bine de <em>știut</em>.</h2>
+        </div>
+        <div class="lume-acc" data-reveal data-reveal-delay="1">
           {service.faq.map((f, i) => (
-            <details class="faq__item" data-reveal data-reveal-delay={(i % 3) + 1}>
-              <summary class="faq__q">{f.q}<span class="faq__icon" aria-hidden="true"></span></summary>
-              <p class="faq__a">{f.a}</p>
+            <details open={i === 0}>
+              <summary>{f.q}<span class="lume-acc-mark" aria-hidden="true">+</span></summary>
+              <p>{f.a}</p>
             </details>
           ))}
         </div>
       </div>
     </section>
 
-    <section class="section section--alt">
+    <!-- Other services -->
+    <section class="lume-sec">
       <div class="container">
-        <h2 class="h2 block-title" data-reveal>Alte servicii</h2>
-        <div class="others">
+        <div class="lume-sec-head" data-reveal>
+          <span class="eyebrow eyebrow--rule">Mai departe</span>
+          <h2 class="h2 lume-sec-title">Alte <em>ritualuri</em>.</h2>
+        </div>
+        <div class="lume-others">
           {others.map((s) => (
-            <a class="other" href={`/servicii/${s.slug}/`} data-reveal>
-              <Img name={s.img} ratio="4 / 3" alt={s.alt} sizes="(min-width: 768px) 45vw, 100vw" widths={[320, 480]} class="other__img" />
-              <div class="other__body">
-                <h3 class="other__title">{s.title}</h3>
-                <span class="other__more">Vezi detalii →</span>
+            <a class="lume-other" href={`/servicii/${s.slug}/`} data-reveal>
+              <div class="lume-other-img reveal-img">
+                <Img name={s.img} alt={s.alt} ratio="4 / 3" sizes="(min-width: 768px) 45vw, 100vw" widths={[320, 480, 640]} />
+              </div>
+              <div class="lume-other-body">
+                <h3 class="lume-other-title">{s.title}</h3>
+                <span class="lume-other-more">Vezi detalii →</span>
               </div>
             </a>
           ))}
@@ -97,79 +133,96 @@ const others = services.filter((s) => s.slug !== service.slug);
       </div>
     </section>
 
-    <BookingBand />
+    <CtaBand title="Pregătită pentru programare?" text="Scrie-ne pe WhatsApp sau lasă-ne un mesaj rapid." />
   </main>
   <Footer />
+  <BookingModal />
 </Base>
 
 <style>
-  .section { padding-block: 3.5rem; }
-  .section--alt { background: color-mix(in oklab, var(--blush) 26%, var(--cream)); }
-  .block-title { color: var(--plum); margin-bottom: 1.75rem; }
+  .lume-sec { padding-block: var(--section-y); }
+  .lume-sec--alt { background: var(--surface-alt); }
+  .lume-sec-head { margin-bottom: var(--space-10); max-width: 44ch; display: flex; flex-direction: column; gap: var(--space-4); }
+  .lume-sec-title { margin: 0; }
 
-  .ph-meta { margin-top: 1.5rem; display: flex; gap: 0.6rem; align-items: center; color: color-mix(in oklab, var(--ink) 80%, transparent); }
-  .ph-meta strong { font-family: var(--font-display); color: var(--plum); font-size: 1.15rem; }
-  .ph-actions { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  /* Short hero */
+  .lume-shero { padding-block: clamp(2.5rem, 6vw, 5rem); }
+  .lume-shero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+  .lume-shero-copy { display: flex; flex-direction: column; gap: var(--space-5); }
+  .lume-shero-title { margin: 0; }
+  .lume-shero-sub { margin: 0; max-width: 46ch; }
+  .lume-shero-meta { display: flex; align-items: baseline; gap: 0.4em; }
+  .lume-shero-from { color: var(--text-muted); }
+  .lume-shero-amount { font-family: var(--font-display); font-size: var(--text-h2); color: var(--text-heading); line-height: 1; }
+  .lume-shero-dur { font-size: var(--text-sm); color: var(--text-muted); }
+  .lume-shero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-2); }
+  .lume-shero-media {
+    border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg); aspect-ratio: 4 / 5;
+  }
+  .lume-shero-media :global(picture) { display: block; width: 100%; height: 100%; }
+  .lume-shero-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
 
-  .detail { display: grid; gap: 2rem; align-items: start; }
-  .detail__img { width: 100%; border-radius: 1rem; display: block; }
-  .benefits { list-style: none; display: grid; gap: 0.85rem; }
-  .benefits li { position: relative; padding-left: 1.75rem; line-height: 1.6; }
-  .benefits li::before {
-    content: ""; position: absolute; left: 0; top: 0.45em;
-    width: 0.7rem; height: 0.7rem; border-radius: 999px;
-    background: var(--gold);
+  /* Benefits */
+  .lume-benefits-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .lume-benefits { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+  .lume-benefits li { position: relative; padding-left: 1.9rem; line-height: var(--leading-body); color: var(--text-body); }
+  .lume-benefits li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 0.6rem; height: 0.6rem; border-radius: 999px; background: var(--gold);
   }
 
-  .types { display: grid; gap: 1.25rem; }
-  .type {
-    background: color-mix(in oklab, var(--cream) 94%, white);
-    border: 1px solid color-mix(in oklab, var(--plum) 10%, transparent);
-    border-radius: 1rem; padding: 1.4rem 1.5rem;
+  /* Types */
+  .lume-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+  .lume-type {
+    background: var(--surface-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-sm);
+    display: flex; flex-direction: column; gap: var(--space-3);
   }
-  .type__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
-  .type__name { color: var(--plum); font-size: 1.25rem; }
-  .type__price { color: var(--gold); font-weight: 600; white-space: nowrap; }
-  .type__desc { margin-top: 0.6rem; line-height: 1.6; color: color-mix(in oklab, var(--ink) 85%, transparent); }
-  .type__dur { display: inline-block; margin-top: 0.75rem; font-size: 0.85rem; color: color-mix(in oklab, var(--ink) 60%, transparent); }
+  .lume-type-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+  .lume-type-name { font-family: var(--font-display); font-size: var(--text-h3); color: var(--text-heading); margin: 0; }
+  .lume-type-price { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+  .lume-type-desc { margin: 0; color: var(--text-muted); line-height: var(--leading-body); }
+  .lume-type-dur { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
 
-  .faq-wrap { max-width: 48rem; }
-  .faq__item { border-bottom: 1px solid color-mix(in oklab, var(--plum) 12%, transparent); }
-  .faq__q {
-    cursor: pointer; list-style: none; display: flex; align-items: center;
-    justify-content: space-between; gap: 1rem; padding: 1.1rem 0;
-    font-family: var(--font-display); font-size: 1.1rem; color: var(--plum);
+  /* FAQ accordion (same language as homepage) */
+  .lume-faqwrap { max-width: 48rem; }
+  .lume-acc { display: flex; flex-direction: column; gap: var(--space-3); }
+  .lume-acc details { background: var(--surface-card); border-radius: var(--radius-md); border: 1px solid var(--border-soft); padding: var(--space-5) var(--space-6); }
+  .lume-acc summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+    gap: var(--space-4); font-family: var(--font-display); font-size: var(--text-h3); color: var(--text-heading);
   }
-  .faq__q::-webkit-details-marker { display: none; }
-  .faq__icon { position: relative; flex: none; width: 1rem; height: 1rem; }
-  .faq__icon::before, .faq__icon::after {
-    content: ""; position: absolute; top: 50%; left: 0; width: 1rem; height: 2px;
-    background: var(--gold); transform: translateY(-50%); transition: transform .25s ease;
-  }
-  .faq__icon::after { transform: translateY(-50%) rotate(90deg); }
-  .faq__item[open] .faq__icon::after { transform: translateY(-50%) rotate(0); }
-  .faq__a { padding: 0 0 1.25rem; line-height: 1.7; color: color-mix(in oklab, var(--ink) 82%, transparent); }
+  .lume-acc summary::-webkit-details-marker { display: none; }
+  .lume-acc-mark { color: var(--gold); font-size: 1.4em; line-height: 1; flex: none; display: inline-block; transition: transform var(--dur-fast) var(--ease-soft); }
+  .lume-acc details[open] .lume-acc-mark { transform: rotate(45deg); }
+  .lume-acc p { margin: var(--space-3) 0 0; color: var(--text-muted); line-height: var(--leading-body); }
 
-  .others { display: grid; gap: 1.25rem; }
-  .other {
+  /* Other services */
+  .lume-others { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+  .lume-other {
     display: block; text-decoration: none; color: inherit;
-    background: color-mix(in oklab, var(--cream) 94%, white);
-    border: 1px solid color-mix(in oklab, var(--plum) 10%, transparent);
-    border-radius: 1rem; overflow: hidden;
-    transition: transform .25s ease, box-shadow .25s ease;
+    background: var(--surface-card); border-radius: var(--radius-lg); overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--dur-fast) var(--ease-soft), box-shadow var(--dur-fast) var(--ease-soft);
   }
-  .other:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--plum) 55%, transparent); }
-  .other__img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
-  .other__body { padding: 1rem 1.25rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-  .other__title { color: var(--plum); font-size: 1.15rem; }
-  .other__more { color: var(--gold); font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
+  .lume-other:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .lume-other-img { aspect-ratio: 4 / 3; overflow: hidden; }
+  .lume-other-img :global(picture) { display: block; width: 100%; height: 100%; }
+  .lume-other-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .lume-other-body { padding: var(--space-5) var(--space-6); display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
+  .lume-other-title { font-family: var(--font-display); font-size: var(--text-h3); color: var(--text-heading); margin: 0; }
+  .lume-other-more { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); white-space: nowrap; }
 
-  @media (min-width: 768px) {
-    .section { padding-block: 4.5rem; }
-    .types { grid-template-columns: repeat(3, 1fr); }
-    .others { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 900px) {
+    .lume-shero-grid { grid-template-columns: 1fr; }
+    .lume-shero-media { max-width: 26rem; }
+    .lume-benefits-grid { grid-template-columns: 1fr; }
   }
-  @media (min-width: 900px) {
-    .detail { grid-template-columns: 0.9fr 1.1fr; gap: 3rem; }
+  @media (max-width: 820px) {
+    .lume-types { grid-template-columns: 1fr; }
+    .lume-others { grid-template-columns: 1fr; }
   }
 </style>

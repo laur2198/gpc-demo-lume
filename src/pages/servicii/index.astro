@@ -1,10 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
-import ConceptBanner from '../../components/ConceptBanner.astro';
-import Nav from '../../components/Nav.astro';
-import Footer from '../../components/Footer.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import BookingBand from '../../components/BookingBand.astro';
+import ConceptBanner from '../../components/lume/ConceptBanner.astro';
+import Nav from '../../components/lume/Nav.astro';
+import Footer from '../../components/lume/Footer.astro';
+import BookingModal from '../../components/lume/BookingModal.astro';
+import PageHeader from '../../components/lume/PageHeader.astro';
+import CtaBand from '../../components/lume/CtaBand.astro';
 import Img from '../../components/Img.astro';
 import { services } from '../../data/services';
 ---
@@ -18,49 +19,90 @@ import { services } from '../../data/services';
     <PageHeader
       eyebrow="Servicii"
       title="Ritualuri gândite pentru privirea ta."
+      accent="privirea ta"
       subtitle="Trei direcții, un singur standard: tehnică certificată, produse premium și un spațiu intim, fără grabă."
     />
 
-    <section class="section">
-      <div class="container services-grid">
+    <section class="lume-srvpage">
+      <div class="container lume-srv-list">
         {services.map((s, i) => (
-          <a class="card" href={`/servicii/${s.slug}/`} data-reveal data-reveal-delay={(i % 3) + 1}>
-            <Img name={s.img} ratio="4 / 3" alt={s.alt} sizes="(min-width: 768px) 33vw, 100vw" widths={[320, 480, 640]} class="card__img" />
-            <div class="card__body">
-              <h2 class="card__title">{s.title}</h2>
-              <p class="card__tags">{s.tags}</p>
-              <p class="card__desc">{s.short}</p>
-              <p class="card__price">de la <strong>{s.priceFrom} lei</strong> · {s.duration}</p>
-              <span class="card__more">Vezi detalii →</span>
+          <div class:list={['lume-srv', i % 2 === 1 && 'is-rev']} data-reveal>
+            <a class="lume-srv-img reveal-img" href={`/servicii/${s.slug}/`} aria-label={s.title}>
+              <Img name={s.img} alt={s.alt} ratio="5 / 4" sizes="(min-width: 860px) 45vw, 100vw" widths={[480, 640, 860]} />
+            </a>
+            <div class="lume-srv-txt">
+              <div class="lume-srv-variants">
+                {s.tags.split('·').map((t) => <span class="lume-pill">{t.trim()}</span>)}
+              </div>
+              <h2 class="h2 lume-srv-name"><a href={`/servicii/${s.slug}/`}>{s.title}</a></h2>
+              <p class="lume-srv-desc">{s.intro}</p>
+              <div class="lume-srv-foot">
+                <div class="lume-srv-price">
+                  <span class="eyebrow lume-srv-from">de la</span>
+                  <span class="lume-srv-amount">{s.priceFrom} lei</span>
+                  <span class="lume-srv-dur">· {s.duration}</span>
+                </div>
+                <a class="btn btn--ghost" href={`/servicii/${s.slug}/`}>Vezi detalii</a>
+              </div>
             </div>
-          </a>
+          </div>
         ))}
       </div>
     </section>
 
-    <BookingBand />
+    <CtaBand title="Nu ești sigură ce ți se potrivește?" text="Scrie-ne și îți recomandăm ritualul potrivit pentru tine." />
   </main>
   <Footer />
+  <BookingModal />
 </Base>
 
 <style>
-  .section { padding-block: 3.5rem 4.5rem; }
-  .services-grid { display: grid; gap: 1.5rem; }
-  .card {
-    display: block; text-decoration: none; color: inherit;
-    background: color-mix(in oklab, var(--cream) 92%, white);
-    border: 1px solid color-mix(in oklab, var(--plum) 8%, transparent);
-    border-radius: 1.25rem; overflow: hidden;
-    transition: transform .25s ease, box-shadow .25s ease;
+  .lume-srvpage { padding-block: clamp(2rem, 5vw, 4rem) var(--section-y); }
+  .lume-srv-list { display: flex; flex-direction: column; gap: clamp(3.5rem, 8vw, 7rem); }
+
+  .lume-srv {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
   }
-  .card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--plum) 60%, transparent); }
-  .card__img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
-  .card__body { padding: 1.25rem 1.4rem 1.6rem; }
-  .card__title { color: var(--plum); font-size: 1.4rem; }
-  .card__tags { margin-top: 0.35rem; font-size: 0.8125rem; letter-spacing: 0.04em; color: var(--gold); font-weight: 600; }
-  .card__desc { margin-top: 0.75rem; line-height: 1.6; color: color-mix(in oklab, var(--ink) 85%, transparent); }
-  .card__price { margin-top: 0.75rem; font-size: 0.95rem; }
-  .card__price strong { font-family: var(--font-display); color: var(--plum); }
-  .card__more { display: inline-block; margin-top: 0.9rem; color: var(--gold); font-weight: 600; font-size: 0.9rem; }
-  @media (min-width: 768px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+  .lume-srv.is-rev .lume-srv-img { order: 2; }
+
+  .lume-srv-img {
+    display: block;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    aspect-ratio: 5 / 4;
+  }
+  .lume-srv-img :global(picture) { display: block; width: 100%; height: 100%; }
+  .lume-srv-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .lume-srv-img:hover :global(img) { transform: scale(1.04); transition: transform 0.6s var(--ease-out); }
+
+  .lume-srv-txt { display: flex; flex-direction: column; gap: var(--space-5); }
+  .lume-srv-variants { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .lume-pill {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--plum);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 0.85rem;
+  }
+  .lume-srv-name { margin: 0; }
+  .lume-srv-name a { text-decoration: none; color: inherit; }
+  .lume-srv-name a:hover { color: var(--gold); }
+  .lume-srv-desc { margin: 0; color: var(--text-muted); line-height: var(--leading-body); max-width: 44ch; }
+  .lume-srv-foot { display: flex; align-items: center; gap: var(--space-5); margin-top: var(--space-2); flex-wrap: wrap; }
+  .lume-srv-price { display: flex; align-items: baseline; gap: 0.4em; }
+  .lume-srv-from { color: var(--text-muted); }
+  .lume-srv-amount { font-family: var(--font-display); font-size: var(--text-h2); color: var(--text-heading); line-height: 1; }
+  .lume-srv-dur { font-size: var(--text-sm); color: var(--text-muted); }
+
+  @media (max-width: 860px) {
+    .lume-srv { grid-template-columns: 1fr; gap: var(--space-8); }
+    .lume-srv.is-rev .lume-srv-img { order: 0; }
+  }
 </style>

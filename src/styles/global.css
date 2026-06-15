@@ -170,6 +170,10 @@ a { color: inherit; }
   font-weight: 400;
 }
 
+/* Eyebrow with leading hairline rule */
+.eyebrow--rule { display: inline-flex; align-items: center; gap: 0.7em; }
+.eyebrow--rule::before { content: ""; width: 2rem; height: 1px; background: var(--gold); display: inline-block; flex: none; }
+
 /* Emphasized words inside display headings: italic, gold. Use <em>. */
 .h-display em, .h1 em, .h2 em, .h3 em, h1 em, h2 em, h3 em {
   font-style: italic;
